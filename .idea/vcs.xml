@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Ride_Share_Full_Stack" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Ride_Share_Full_Stack/ui-spa" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ui-spa" vcs="Git" />
+  </component>
+</project>
