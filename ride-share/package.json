@@ -1,7 +1,6 @@
-
 {
   "name": "ride-share",
-  "repository":"https://github.com/quiteqiang/Ride_Share_Full_Stack.git",
+  "repository": "https://github.com/quiteqiang/Ride_Share_Full_Stack.git",
   "author": "quiteqiang <qiang_wang@taylor.edu>",
   "version": "1.0.0",
   "private": true,

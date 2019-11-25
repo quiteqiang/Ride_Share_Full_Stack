@@ -1,3 +1,6 @@
+const { Model } = require("objection");
+
+
 class vehicle_type extends Model {
     static get tableName(){
         return 'vehicle_type';
@@ -15,3 +18,4 @@ class vehicle_type extends Model {
         }
     }
 }
+module.exports = Vehicle_type;

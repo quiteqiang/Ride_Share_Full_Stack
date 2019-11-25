@@ -1,3 +1,6 @@
+const { Model } = require("objection");
+
+
 class location extends Model {
     static get tableName() {
         return 'Location';
@@ -31,3 +34,4 @@ class location extends Model {
         }
     }
 }
+module.exports = Location;

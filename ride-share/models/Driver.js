@@ -1,3 +1,5 @@
+const { Model } = require("objection");
+
 class driver extends Model {
     static get tableName() {
         return 'driver';
@@ -31,3 +33,5 @@ class driver extends Model {
         }
     }
 }
+
+module.exports = Driver;
