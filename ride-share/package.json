@@ -1,0 +1,13 @@
+{
+  "name": "ride-share",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/timtheswan/ride-share.git",
+  "author": "quiteqiang <qiang_wang@taylor.edu>",
+  "license": "MIT",
+  "dependencies": {
+    "knex": "^0.19.4",
+    "objection": "^1.6.11",
+    "pg": "^7.12.1"
+  }
+}
