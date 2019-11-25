@@ -213,16 +213,20 @@ class passenger extends Model {
                 join: {
                     from: 'passenger.id',
                     through: {
-                        from: passengers.passengerId,
-                        to: rideId
-                    }
+                        from: 'passengers.passengerId',
+                        to: 'passengers.rideId'
+                    },
+                    to: 'ride.id'
                 }
-
             }
         }
     }
 }
-
+driver.query()
+    .then(result => {
+        console.log(result);
+    })
+    ;
 // vehicle.query()
 //     .then(vehicle => {
 //         console.log(vehicle[0]);
@@ -247,18 +251,18 @@ class passenger extends Model {
 //         knex.destroy();
 //     });
 
-// location.query()
-//     .then(location => {
-//         console.log(location[0]);
-//     })
-//     .catch((err)=>{
-//         console.log(err);
-//         throw err;
-//     })
-//     .finally(()=>{
-//         knex.destroy();
-//     });
-state.query()
+location.query()
+    .then(location => {
+        console.log(location[0]);
+    })
+    .catch((err)=>{
+        console.log(err);
+        throw err;
+    })
+    .finally(()=>{
+        knex.destroy();
+    });
+driver.query()
     .then(state => {
         console.log(state[0]);
     })
@@ -268,6 +272,4 @@ state.query()
     })
     .finally(()=>{
         knex.destroy();
-    });
-
-    // vehicle.query()
+    })
