@@ -9,7 +9,7 @@ class Ride extends Model {
         return{
             drivers: {
                 relation: Model.ManyToManyRelation,
-                modelClass: driver,
+                modelClass: Driver,
                 join: {
                     from: 'ride.id',
                     through: {
@@ -21,7 +21,7 @@ class Ride extends Model {
             },
             ride: {
                 relation: Model.HasOneRelation,
-                modelClass: vehicle,
+                modelClass: Vehicle,
                 join: {
                     from: 'ride.vehicleId',
                     to: 'vehicle.id'
@@ -29,7 +29,7 @@ class Ride extends Model {
             },
             from_location:{
                 relation: Model.BelongsToOneRelation,
-                modelClass: location,
+                modelClass: Location,
                 join: {
                     from: 'ride.fromLocationId',
                     to: 'location.id'
@@ -37,7 +37,7 @@ class Ride extends Model {
             },
             to_location:{
                 relation: Model.BelongsToOneRelation,
-                modelClass: location,
+                modelClass: Location,
                 join: {
                     from: 'ride.toLocationId',
                     to: 'location.id'

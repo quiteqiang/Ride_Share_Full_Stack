@@ -8,7 +8,7 @@ class Driver extends Model {
         return {
             vehicles: {
                 relation: Model.ManyToManyRelation,
-                modelClass: vehicle,
+                modelClass: Vehicle,
                 join: {
                     from: 'driver.id',
                     through: {
@@ -20,7 +20,7 @@ class Driver extends Model {
             },
             rides: {
                 relation: Model.ManyToManyRelation,
-                modelClass: ride,
+                modelClass: Ride,
                 join: {
                     from: 'driver.id',
                     through: {
