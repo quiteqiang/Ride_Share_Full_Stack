@@ -6,7 +6,7 @@ import App from "./App.vue";
 
 const axiosClient = axios.create({
   // baseURL: "http://localhost:3000"
-  baseURL: "http://faraday.cse.taylor.edu"
+  baseURL: "http://localhost:3000"
 });
 Vue.prototype.$axios = axiosClient;
 

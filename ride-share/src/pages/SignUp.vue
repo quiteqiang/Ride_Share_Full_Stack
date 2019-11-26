@@ -1,38 +1,53 @@
 <template>
   <v-container>
     <div>
-      <h4 class="display-1">Sign Up</h4>
+      <h4 class="display-1">Add Ride</h4>
 
-      <instructions details="Sign up for our nifty site." />
+      <instructions details="Fill out the information to make a ride!" />
 
       <v-form v-model="valid">
         <v-text-field
-          v-model="newMember.firstName"
-          v-bind:rules="rules.required"
-          label="First name"
+          v-model="newMember.date"
+          label="Date"
+          required
         ></v-text-field>
         <v-text-field
-          v-model="newMember.lastName"
-          v-bind:rules="rules.required"
-          label="Last name"
+          v-model="newMember.time"
+          label="Time"
+          required
         ></v-text-field>
         <v-text-field
-          v-model="newMember.email"
-          v-bind:rules="rules.email"
-          error-count="10"
-          type="email"
-          label="Your email address"
-        >
-        </v-text-field>
-        <v-text-field
-          v-model="newMember.password"
-          v-bind:rules="rules.password"
-          error-count="10"
-          type="password"
-          label="Non-trivial password"
+          v-model="newMember.distance"
+          label="Ride Distance"
           required
         >
         </v-text-field>
+        <v-text-field
+          v-model="newMember.fuelPrice"
+          label="Fuel Price"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="newMember.fee"
+          label="Ride Fee"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="newMember.vehicleId"
+          label="Vehicle ID"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="newMember.fromLocationId"
+          label="From Location"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="newMember.toLocationId"
+          label="To Location"
+          required
+        ></v-text-field>
+        
         <v-btn v-bind:disabled="!valid" v-on:click="handleSubmit"
           >Sign Up
         </v-btn>
@@ -116,11 +131,15 @@ export default {
 
       // Post the content of the form to the Hapi server.
       this.$axios
-        .post("/accounts", {
-          firstName: this.newMember.firstName,
-          lastName: this.newMember.lastName,
-          email: this.newMember.email,
-          password: this.newMember.password
+        .post("/rides", {
+          date: this.newMember.date,
+          time: this.newMember.time,
+          distance: this.newMember.distance,
+          fuelPrice: this.newMember.fuelPrice,
+          fee: this.newMember.fee,
+          vehicleId: this.newMember.vehicleId,
+          fromLocationId: this.newMember.fromLocationId,
+          toLocationId: this.newMember.toLocationId,
         })
         .then(result => {
           // Based on whether things worked or not, show the

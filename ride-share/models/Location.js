@@ -1,7 +1,7 @@
 const { Model } = require("objection");
 
 
-class location extends Model {
+class Location extends Model {
     static get tableName() {
         return 'Location';
     }

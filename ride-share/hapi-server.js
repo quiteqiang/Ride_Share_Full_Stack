@@ -55,7 +55,50 @@ async function init() {
   await server.register(require("@hapi/inert"));
 
   // Configure routes.
-  // server.route([
+  server.route([
+    {
+      method: "POST",
+      path: "/rides",
+      config: {
+        description: "Create a ride",
+      },
+      handler: async (request,h) => {
+        console.log("I'm running!");
+        const newRide = await ride.query().insert({
+          date: request.payload.date,
+          time: request.payload.time,
+          distance: request.payload.distance,
+          fuelPrice: request.payload.fuelPrice,
+          fee: request.payload.fee,
+          vehicleId: request.payload.vehicleId,
+          fromLocationId: request.payload.fromLocationId,
+          toLocationId: request.payload.toLocationId,
+        });
+        
+        if (newRide){
+          return {
+            ok:true,
+            msge: `Created ride from ${request.payload.fromLocationId}`
+          };
+        }
+        else {
+          return {
+            ok:false,
+            msge: `Couldn't create ride`
+          };
+        }
+      }
+    },
+    {
+      method: "GET",
+      path: "/rides",
+      handler: () => {
+        return {
+          Hello:"World"
+        };
+      }
+    }
+  ]);
   //   {
   //     method: "POST",
   //     path: "/accounts",

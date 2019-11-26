@@ -1,7 +1,7 @@
 const { Model } = require("objection");
 
 
-class ride extends Model {
+class Ride extends Model {
     static get tableName(){
         return 'ride';
     }

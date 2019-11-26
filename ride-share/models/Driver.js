@@ -1,6 +1,6 @@
 const { Model } = require("objection");
 
-class driver extends Model {
+class Driver extends Model {
     static get tableName() {
         return 'driver';
     }
