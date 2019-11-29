@@ -9,7 +9,7 @@ class Location extends Model {
         return {
             state: {
                 relation: Model.ManyToManyRelation,
-                modelClass: Location,
+                modelClass: require('./Location'),
                 join: {
                     from: 'location.state',
                     to: 'state.abbreviation'
@@ -17,7 +17,7 @@ class Location extends Model {
             },
             ride_depart:{
                 relation: Model.HasManyRelation,
-                modelClass: Ride,
+                modelClass: require('./Ride'),
                 join:{
                     from:'location.id',
                     to:'ride.fromLocationId'
@@ -25,7 +25,7 @@ class Location extends Model {
             },
             ride_leave:{
                 relation: Model.HasManyRelation,
-                modelClass: Ride,
+                modelClass: require('./Ride'),
                 join:{
                     from:'location.id',
                     to:'ride.toLocationId'

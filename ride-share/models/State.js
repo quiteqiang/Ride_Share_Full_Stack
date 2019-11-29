@@ -9,7 +9,7 @@ class State extends Model {
         return {
             drivers: {
                 relation: Model.ManyToManyRelation,
-                modelClass: State,
+                modelClass: require('./State'),
                 join: {
                     from: 'state.abbreviation',
                     to: 'location.state'

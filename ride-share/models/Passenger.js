@@ -9,7 +9,7 @@ class Passenger extends Model {
         return {
             rides: {
                 relation: this.ManyToManyRelation,
-                modelClass: Ride,
+                modelClass: require('./Ride'),
                 join: {
                     from: 'passenger.id',
                     through: {

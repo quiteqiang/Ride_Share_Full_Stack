@@ -9,7 +9,7 @@ class Vehicle_type extends Model {
         return {
             vehicles: {
                 relation: Model.HasManyRelation,
-                modelClass: Vehicle,
+                modelClass: require('./Vehicle'),
                 join: {
                     from: 'vehicle_type.id',
                     to: 'vehicle.vehicleTypeId'
