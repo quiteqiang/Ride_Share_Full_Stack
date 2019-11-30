@@ -1,23 +1,55 @@
 <template>
   <v-container>
     <div>
-      <p>{{ currentUser }}</p>
-      <p>[Sign-in stuff goes here]</p>
-      <v-btn v-on:click="fakeSignIn">Fake Sign In</v-btn>
-      <v-btn v-on:click="fakeSignOut">Fake Sign Out</v-btn>
+      <h2>Sign In Credentials</h2>
+
+      <v-autocomplete
+        label="Username"
+        :items="allUsers"
+        v-model="tempUser"
+        
+      ></v-autocomplete>
+
+      <p v-if="currentUser==false">Currently not signed in</p>
+      <p v-else> Currently signed in as {{ currentUser }}</p>
+      <!-- <p>[Sign-in stuff goes here]</p> -->
+      <v-btn color=primary v-on:click="signIn">Sign In</v-btn>
+      <v-btn v-on:click="signOut">Sign Out</v-btn>
+      <br>
+        <br>
+        
+      <h2>Sign Up Credentials</h2>
+      <v-text-field
+      label="Username"
+      v-model="tempSignUp"
+      ></v-text-field>
+
+      <v-btn  v-on:click="signUp">Sign Up</v-btn>
     </div>
+    
   </v-container>
 </template>
 
 <script>
 export default {
   name: "SignIn",
+  data() {
+    return{
+      allUsers: ["Tim Swanson", "Rob Swanson"],
+      tempUser: "",
+      tempSignUp: "",
+    } 
+  },
   methods: {
-    fakeSignIn: function() {
-      this.$root.currentUser = "A User";
+    signIn: function() {
+      this.$root.currentUser = this.tempUser;
+      console.log(this.tempUser)
     },
-    fakeSignOut: function() {
+    signOut: function() {
       this.$root.currentUser = null;
+    },
+    signUp: function(){
+      this.$root.currentUser = this.tempUser;
     }
   },
   computed: {
@@ -25,9 +57,10 @@ export default {
       if (this.$root.currentUser) {
         return this.$root.currentUser;
       } else {
-        return "No one logged in";
+        return false;
       }
     }
-  }
+  },
+  
 };
 </script>

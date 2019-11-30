@@ -18,6 +18,8 @@ export default new Router({
     { name: "sign-in", path: "/sign-in", component: SignIn },
     { name: "about-us", path: "/about-us", component: About },
     { name: "accounts", path: "/accounts", component: Accounts },
-    { name: "rides", path: "/rides"}
+    { name: "rides", path: "/rides"},
+    { name: "admin", path: "/admin"}
+
   ]
 });

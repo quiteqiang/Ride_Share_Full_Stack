@@ -126,6 +126,7 @@ export default {
   methods: {
     // Invoked when the user clicks the 'Sign Up' button.
     handleSubmit: function() {
+      console.log(this.newMember);
       // Haven't been successful yet.
       this.accountCreated = false;
 
