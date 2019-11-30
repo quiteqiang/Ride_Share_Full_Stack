@@ -13,7 +13,27 @@ Vue.prototype.$axios = axiosClient;
 new Vue({
   el: "#app",
   data: {
-    currentUser: null
+    currentUser: null,
+    rides:[{
+      id: 1,
+      date: "1/1/1",
+      time: "1:00:00",
+      distance: 5,
+      fuelPrice: 5,
+      fee: 5,
+      vehicleId: 4,
+      fromLocationId: 5,
+      toLocationId: 6,
+    }],
+  },
+  computed: {
+
+  },
+  methods :{
+      updateRides: function(){
+        console.log("Updating Rides...")
+        //update this.rides
+      }
   },
   router,
   vuetify,
