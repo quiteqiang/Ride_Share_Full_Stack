@@ -16,6 +16,7 @@ new Vue({
     currentUser: null,
     rides:[],
     vehicles:[],
+    locations:[],
   },
   computed: {
 
@@ -45,26 +46,62 @@ new Vue({
       },
       updateVehicles: function(){
         console.log("Updating vehicles...")
-        this.$axios
-        .get("vehicles/",{})
+        this.$axios 
+        .get("/vehicles",{})
         .then(result=>{
           if (result.status === 200) {
-            if (result.data.ok) {
+            // if (result.data.ok) {
               this.vehicles=[];
               let i = 0;
               for (i in result.data){
                 this.vehicles.push(result.data[i]);
+                this.vehicles[i]["name"]=this.vehicles[i]["make"] + " " + this.vehicles[i]["model"];
               }
+              console.log("Vehicles:");
+              console.log(this.vehicles);
+
               return this.vehicles;
 
-            } else {
-              
-              this.showDialog("Sorry", result.data.msge);
-              return (result.data.msge)
+            // } else {
+              // console.log(result.data);
+              // return (result.data.msge)
+          // }
           }
+          else {
+            console.log(result.data);
+            return (result.data.msge)
           }
         })
-      }
+      },
+      updateLocations: function(){
+        console.log("Updating locations...")
+        this.$axios 
+        .get("/locations",{})
+        .then(result=>{
+          if (result.status === 200) {
+            // if (result.data.ok) {
+              this.locations=[];
+              let i = 0;
+              for (i in result.data){
+                this.locations.push(result.data[i]);
+              }
+              console.log("Locations:");
+              console.log(this.locations);
+
+              return this.locations;
+
+            // } else {
+              // console.log(result.data);
+              // return (result.data.msge)
+          // }
+          }
+          else {
+            console.log(result.data);
+            return (result.data.msge)
+          }
+        })
+      },
+      
   },
   router,
   vuetify,

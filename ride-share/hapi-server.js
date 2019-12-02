@@ -195,6 +195,21 @@ async function init() {
       }
     },
     
+    {
+      method: "GET",
+      path: "/locations",
+      config: {
+        description: "Retrieve all locations"
+      },
+      handler: async (request, h) => {
+        const data= await location.query();
+        console.log("Locations: ");
+        console.log(data);
+        return data;
+      }
+    },
+    
+    
   ]);
   //   {
   //     method: "POST",

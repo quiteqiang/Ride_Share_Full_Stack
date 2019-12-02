@@ -3,7 +3,7 @@ const { Model } = require("objection");
 
 class Location extends Model {
     static get tableName() {
-        return 'Location';
+        return 'location';
     }
     static get relationMappings(){
         return {

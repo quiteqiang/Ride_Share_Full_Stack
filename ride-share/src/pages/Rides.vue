@@ -5,7 +5,6 @@
       <v-btn color="primary" dark class="" v-on:click="createRide">New Item</v-btn>
       
       <v-btn color="" class="" v-on:click="update">Update</v-btn>
-
       <v-data-table
         class="elevation-1"
         v-bind:headers="headers"
@@ -71,11 +70,26 @@
                   label="Vehicle"
                   required
                   :items=vehicles
-                  item-text=vehicles.make
-                  item-value=vehicles.id
+                  item-text=name
+                  item-value=id
                 ></v-autocomplete>
-
-                <v-text-field
+                <v-autocomplete
+                  v-model="newRide.fromlocationid"
+                  label="Departing from"
+                  required
+                  :items=locations
+                  item-text=name
+                  item-value=id
+                ></v-autocomplete>
+                <v-autocomplete
+                  v-model="newRide.tolocationid"
+                  label="Arriving to"
+                  required
+                  :items=locations
+                  item-text=name
+                  item-value=id
+                ></v-autocomplete>
+                <!-- <v-text-field
                   v-model="newRide.fromlocationid"
                   label="From Location"
                   required
@@ -84,7 +98,7 @@
                   v-model="newRide.tolocationid"
                   label="To Location"
                   required
-                ></v-text-field>
+                ></v-text-field> -->
               </v-form>
             </v-card-text>
 
@@ -130,7 +144,7 @@ export default {
       editId: "",
       valid: false, // Are all the fields in the form valid?
 
-      newRide: {date:new Date().toISOString().substr(0, 10),time:""},
+      newRide: {},
 
       // Was an account created successfully?
       accountCreated: false,
@@ -166,10 +180,11 @@ export default {
     update: function(){
       this.$root.updateRides();  
       this.$root.updateVehicles();
-
+      this.$root.updateLocations();
     },
     createRide: function(){
         console.log("Create Ride");
+        this.update();
         this.newRide = {};
         this.dialogType = "create";
         this.dialogHeader = "Create Ride"
@@ -215,6 +230,7 @@ export default {
         .catch(err => this.showDialog("Failed", err));
     },
     editRide: function(ride){
+        this.update();
         this.editId=ride.id;
         this.dialogType = "edit";
         this.dialogHeader = "Edit Ride"
@@ -308,9 +324,11 @@ export default {
       }
     },
     vehicles: function(){
-      this.$root.updateVehicles();
-      return this.$root.updateVehicles;
-    }
+      return this.$root.vehicles;
+    },
+    locations: function(){
+      return this.$root.locations;
+    },
   }
 };
 </script>
