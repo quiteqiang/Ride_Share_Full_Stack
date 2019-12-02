@@ -92,10 +92,8 @@ async function init() {
     {
       method: "GET",
       path: "/rides",
-      handler: () => {
-        return {
-          Hello:"World"
-        };
+      handler: async (request, h) =>  {
+          return await knex('ride').select('date', 'time','distance', 'fuelprice', 'fee','vehicleId','fromLocationId','toLocationId');
       }
     }
   ]);
