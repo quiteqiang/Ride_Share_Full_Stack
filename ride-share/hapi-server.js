@@ -63,22 +63,24 @@ async function init() {
         description: "Create a ride",
       },
       handler: async (request,h) => {
-        console.log("I'm running!");
+        console.log("Create Ride");
+        console.log(request.payload);
+
         const newRide = await ride.query().insert({
           date: request.payload.date,
           time: request.payload.time,
           distance: request.payload.distance,
-          fuelPrice: request.payload.fuelPrice,
+          fuelprice: request.payload.fuelprice,
           fee: request.payload.fee,
-          vehicleId: request.payload.vehicleId,
-          fromLocationId: request.payload.fromLocationId,
-          toLocationId: request.payload.toLocationId,
+          vehicleid: request.payload.vehicleid,
+          fromlocationid: request.payload.fromlocationid,
+          tolocationid: request.payload.tolocationid,
         });
         
         if (newRide){
           return {
             ok:true,
-            msge: `Created ride from ${request.payload.fromLocationId}`
+            msge: `Created ride from ${request.payload.fromlocationid}`
           };
         }
         else {
@@ -89,15 +91,110 @@ async function init() {
         }
       }
     },
-    {
+    { 
       method: "GET",
       path: "/rides",
-      handler: () => {
-        return {
-          Hello:"World"
-        };
+      config: {
+        description: "Retrieve all rides"
+      },
+      handler: async (request, h) => {
+        const data= await ride.query();
+        console.log("Returning: ");
+        console.log(data);
+        return data;
       }
-    }
+    },
+    {
+      method: "PUT",
+      path:"/rides/{id}",
+      config:{
+        description: "Edit a ride"
+      },
+      handler: async (request, h)=>{
+        const result = await ride.query().where('id',request.params.id).update(request.payload);
+        if (result) {
+          return {
+            ok: true,
+            msge: `Updated ride '${request.params.id}'`
+          };
+        }
+        else {
+          return {
+            ok : false,
+            msge:  `Couldn't update ride '${request.params.id}'`
+          }
+        }
+      }
+    },
+    {
+      method: "DELETE",
+      path:"/rides/{id}",
+      config:{
+        description: "Delete a ride"
+      },
+      handler: async (request, h)=>{
+        const result = await ride.query().deleteById(request.params.id);
+        // console.log("Deleting row:")
+        // console.log(await ride.query());
+
+        // const result = ride.query().delete().where("id",request.params.id);
+        console.log("Delete Result:");
+        console.log(result);
+        if (result) {
+          return {
+            ok: true,
+            msge: `Deleted account '${request.params.id}'`
+          };
+        }
+        else {
+          return {
+            ok : false,
+            msge:  `Couldn't delete account '${request.params.id}'`
+          }
+        }
+      }
+    },
+    { 
+      method: "GET",
+      path: "/passengers",
+      config: {
+        description: "Retrieve all passengers"
+      },
+      handler: async (request, h) => {
+        const data= await passenger.query();
+        console.log("Returning: ");
+        console.log(data);
+        return data;
+      }
+    },
+    { 
+      method: "GET",
+      path: "/drivers",
+      config: {
+        description: "Retrieve all drivers"
+      },
+      handler: async (request, h) => {
+        let drivers =  await driver.query();
+        console.log("Drivers: ");
+        console.log(drivers);
+        return drivers;
+        
+      }
+    },
+    { 
+      method: "GET",
+      path: "/vehicles",
+      config: {
+        description: "Retrieve all vehicles"
+      },
+      handler: async (request, h) => {
+        const data= await vehicle.query();
+        console.log("Vehicles: ");
+        console.log(data);
+        return data;
+      }
+    },
+    
   ]);
   //   {
   //     method: "POST",

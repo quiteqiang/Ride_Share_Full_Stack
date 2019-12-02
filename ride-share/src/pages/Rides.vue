@@ -2,8 +2,10 @@
   <v-container>
     <div>
       <h4 class="display-1">Rides</h4>
-      <!-- <p>{{this.$root.rides}}</p> -->
-      <v-btn color="primary" dark class="mb-2" v-on:click="createRide">New Item</v-btn>
+      <v-btn color="primary" dark class="" v-on:click="createRide">New Item</v-btn>
+      
+      <v-btn color="" class="" v-on:click="update">Update</v-btn>
+
       <v-data-table
         class="elevation-1"
         v-bind:headers="headers"
@@ -20,85 +22,83 @@
         </template>
       </v-data-table>
       <br>
-      
-      
-
+   
       <div class="text-xs-center">
-        <v-dialog v-model="createVisible" width="500">
+        <v-dialog v-model="createVisible" width="800">
           <v-card>
             <v-card-title primary-title>
-              Create New Ride
+              {{this.dialogHeader}}
             </v-card-title>
 
             <v-card-text>
-              Fill out the form to create a new ride!
-              {{this.newRide}}
+              {{this.dialogText}}
               {{this.valid}}
             </v-card-text>
 
             <v-divider></v-divider>
+            <v-card-text>
              <v-form v-model="valid">
-               <v-text-field
-                  v-model="newRide.id"
-                  label="ID"
-                  required
-                ></v-text-field>
-                <v-text-field
+                <v-date-picker
                   v-model="newRide.date"
                   label="Date"
+                  prepend-icon="event"
                   required
-                ></v-text-field>
-                <v-text-field
+                >
+                </v-date-picker>
+                <v-time-picker
                   v-model="newRide.time"
                   label="Time"
                   required
-                ></v-text-field>
+                ></v-time-picker>
                 <v-text-field
                   v-model="newRide.distance"
-                  label="Ride Distance"
+                  label="Ride Distance (miles)"
                   required
                 >
                 </v-text-field>
                 <v-text-field
-                  v-model="newRide.fuelPrice"
-                  label="Fuel Price"
+                  v-model="newRide.fuelprice"
+                  label="Fuel Price ($ per mile)"
                   required
                 ></v-text-field>
                 <v-text-field
                   v-model="newRide.fee"
-                  label="Ride Fee"
+                  label="Ride Fee ($)"
                   required
                 ></v-text-field>
-                <v-text-field
-                  v-model="newRide.vehicleId"
-                  label="Vehicle ID"
+                <v-autocomplete
+                  v-model="newRide.vehicleid"
+                  label="Vehicle"
                   required
-                ></v-text-field>
+                  :items=vehicles
+                  item-text=vehicles.make
+                  item-value=vehicles.id
+                ></v-autocomplete>
+
                 <v-text-field
-                  v-model="newRide.fromLocationId"
+                  v-model="newRide.fromlocationid"
                   label="From Location"
                   required
                 ></v-text-field>
                 <v-text-field
-                  v-model="newRide.toLocationId"
+                  v-model="newRide.tolocationid"
                   label="To Location"
                   required
                 ></v-text-field>
-        
-        
-      </v-form>
-            <v-card-actions>
-              <v-btn v-if="dialogType=='create'" color="primary" dark class="mb-2" v-bind:disabled="!valid" v-on:click="createRidePost"
+              </v-form>
+            </v-card-text>
 
+
+      <v-card-actions>
+          <v-btn v-if="dialogType=='create'" color="primary" dark class="mb-2" v-bind:disabled="!valid" v-on:click="createRidePost"
           >Create Ride
-        </v-btn>
-              <v-btn v-if="dialogType=='edit'" color="primary" dark class="mb-2" v-bind:disabled="!valid" v-on:click="editRideUpdate">
-                Edit Ride
-              </v-btn>
-
-              <v-spacer></v-spacer>
-              <v-btn color="primary" text v-on:click="hideDialog">Cancel</v-btn>
-            </v-card-actions>
+          </v-btn>
+          <v-btn v-if="dialogType=='edit'" color="primary" dark class="mb-2" v-bind:disabled="!valid" v-on:click="editRideUpdate">
+            Edit Ride
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text v-on:click="hideDialog">Cancel</v-btn>
+      </v-card-actions>
           </v-card>
         </v-dialog>
       </div>
@@ -110,40 +110,27 @@
 
 export default {
   name: "SignUpPage",
+
+  created(){
+    this.update();
+  },
+
   data: function() {
-    // date: "1/1/1",
-    //   time: "1:00:00",
-    //   distance: 5,
-    //   fuelPrice: 5,
-    //   fee: 5,
-    //   vehicleId: 4,
-    //   fromLocationId: 5,
-    //   toLocationId: 6,
     return {
       headers: [
-        { text: "ID", value: "id" },
-        { text: "From", value: "fromLocationId" },
-        { text: "To", value: "toLocationId" },
+        { text: "From", value: "fromlocationid" },
+        { text: "To", value: "tolocationid" },
+        { text: "Distance", value: "distance" },
+        { text: "Departure Date", value: "date" },
         { text: "Departure Time", value: "time" },
-        { text: "Vehicle", value: "vehicleId" },
+        { text: "Vehicle", value: "vehicleid" },
         { text: "Actions", value: "action" },
-
       ],
 
+      editId: "",
       valid: false, // Are all the fields in the form valid?
 
-      // Object to collect account data
-      newRide: {
-      id: "",
-      date: "",
-      time: "",
-      distance: null,
-      fuelPrice: null,
-      fee: null,
-      vehicleId: null,
-      fromLocationId: null,
-      toLocationId: null,
-      },
+      newRide: {date:new Date().toISOString().substr(0, 10),time:""},
 
       // Was an account created successfully?
       accountCreated: false,
@@ -174,44 +161,20 @@ export default {
       }
     };
   },
+
   methods: {
-    // Invoked when the user clicks the 'Sign Up' button.
-    editRide: function(ride){
-        console.log("Edit Ride");
-        this.dialogType = "edit";
-        this.createVisible = true;
-        this.newRide = ride;
-        console.log(ride);
-    },
-    deleteRide: function(ride){
-        console.log("Delete Ride");
-        console.log(ride);
-        this.$root.updateRides();
-        this.$axios
-        .delete("/rides", ride)
-        .then(result => {
-          // Based on whether things worked or not, show the
-          // appropriate dialog.
-          if (result.status === 200) {
-            if (result.data.ok) {
-              this.$root.updateRides();
-              this.showDialog("Success", result.data.msge);
-            } else {
-              this.showDialog("Sorry", result.data.msge);
-            }
-          }
-        })
-        .catch(err => this.showDialog("Failed", err));
+    update: function(){
+      this.$root.updateRides();  
+      this.$root.updateVehicles();
+
     },
     createRide: function(){
         console.log("Create Ride");
         this.newRide = {};
         this.dialogType = "create";
+        this.dialogHeader = "Create Ride"
+        this.dialogText = "Fill in the following values and submit to create a new ride."
         this.createVisible = true;
-        
-    },
-    showPrompt: function(){
-        console.log("Show Prompt");
     },
     createRidePost: function() {
       console.log(this.newRide);
@@ -229,11 +192,11 @@ export default {
           date: this.newRide.date,
           time: this.newRide.time,
           distance: this.newRide.distance,
-          fuelPrice: this.newRide.fuelPrice,
+          fuelprice: this.newRide.fuelprice,
           fee: this.newRide.fee,
-          vehicleId: this.newRide.vehicleId,
-          fromLocationId: this.newRide.fromLocationId,
-          toLocationId: this.newRide.toLocationId,
+          vehicleid: this.newRide.vehicleid,
+          fromlocationid: this.newRide.fromlocationid,
+          tolocationid: this.newRide.tolocationid,
         })
         .then(result => {
           // Based on whether things worked or not, show the
@@ -250,35 +213,29 @@ export default {
           }
         })
         .catch(err => this.showDialog("Failed", err));
+    },
+    editRide: function(ride){
+        this.editId=ride.id;
+        this.dialogType = "edit";
+        this.dialogHeader = "Edit Ride"
+        this.dialogText = "Change values and press submit to edit ride."
+        this.newRide = ride;
+        this.createVisible = true;
     },
     editRideUpdate: function() {
       this.hideDialog();
-      console.log(this.newRide);
-      // let i=0
-      // for( i in this.$root.rides ){
-      //   if (i.id==this.newRide.id){
-      //     break;
-      //   }
-      // }
-      // this.$root.rides[i]=this.newRide;
-
-      // console.log(this.$root.rides.find(i => i.id==this.newRide.id));
-      
-
-      // Haven't been successful yet.
-      this.accountCreated = false;
-
-      // Post the content of the form to the Hapi server.
+      console.log("Editing ride...");
+      console.log(this.editId);
       this.$axios
-        .post("/rides", {
+        .put("/rides/"+this.editId, {
           date: this.newRide.date,
           time: this.newRide.time,
           distance: this.newRide.distance,
-          fuelPrice: this.newRide.fuelPrice,
+          fuelprice: this.newRide.fuelprice,
           fee: this.newRide.fee,
-          vehicleId: this.newRide.vehicleId,
-          fromLocationId: this.newRide.fromLocationId,
-          toLocationId: this.newRide.toLocationId,
+          vehicleid: this.newRide.vehicleid,
+          fromlocationid: this.newRide.fromlocationid,
+          tolocationid: this.newRide.tolocationid,
         })
         .then(result => {
           // Based on whether things worked or not, show the
@@ -288,8 +245,30 @@ export default {
           if (result.status === 200) {
             if (result.data.ok) {
               this.showDialog("Success", result.data.msge);
-              this.accountCreated = true;
-              this.$root.rides.push(this.newRide)
+              this.update();
+            } else {
+              this.showDialog("Sorry", result.data.msge);
+            }
+          }
+        })
+        .catch(err => this.showDialog("Failed", err));
+        this.editId = "";
+    },
+    deleteRide: function(ride){
+        console.log("Delete Ride");
+        console.log(ride);
+        this.$root.updateRides();
+        this.$axios
+        .delete("/rides/"+ride.id, ride)
+        .then(result => {
+          // Based on whether things worked or not, show the
+          // appropriate dialog.
+          if (result.status === 200) {
+            if (result.data.ok) {
+              console.log("Success");
+              console.log(result.data);
+              this.update();
+              this.showDialog("Success", result.data.msge);
             } else {
               this.showDialog("Sorry", result.data.msge);
             }
@@ -297,8 +276,9 @@ export default {
         })
         .catch(err => this.showDialog("Failed", err));
     },
-
-
+    showPrompt: function(){
+        console.log("Show Prompt");
+    },
     // Helper method to display the dialog box with the appropriate content.
     showDialog: function(header, text) {
       this.dialogHeader = header;
@@ -314,10 +294,11 @@ export default {
 
       if (this.accountCreated) {
         // Only navigate away from the sign-up page if we were successful.
-        this.$router.push({ name: "accounts" });
+        // this.$router.push({ name: "accounts" });
       }
     }
   },
+
   computed: {
     rides: function() {
       if (this.$root.rides) {
@@ -325,6 +306,10 @@ export default {
       } else {
         return false;
       }
+    },
+    vehicles: function(){
+      this.$root.updateVehicles();
+      return this.$root.updateVehicles;
     }
   }
 };

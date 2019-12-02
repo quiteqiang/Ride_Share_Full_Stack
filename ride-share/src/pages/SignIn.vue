@@ -4,6 +4,7 @@
       <h2>Sign In Credentials</h2>
 
       <v-autocomplete
+        @click="updateUsers"
         label="Username"
         :items="allUsers"
         v-model="tempUser"
@@ -35,9 +36,9 @@ export default {
   name: "SignIn",
   data() {
     return{
-      allUsers: ["Tim Swanson", "Rob Swanson"],
       tempUser: "",
       tempSignUp: "",
+      allUsers: [],
     } 
   },
   methods: {
@@ -50,6 +51,29 @@ export default {
     },
     signUp: function(){
       this.$root.currentUser = this.tempUser;
+    },
+    updateUsers: function(){
+      this.$axios
+        .get("/passengers", {})
+        .then(result => {
+          if (result.status === 200) {
+            if (result.data.ok) {
+              let i = 0;
+              for (i in result.data){
+                this.allUsers[i] = result.data[i].firstName + " " + result.data[i].lastName;
+              }
+              this.allUsers =  result.data;
+            } else {
+              console.log("Failed to load users: ");
+              console.log(result.err);
+
+            }
+          }
+        })
+        .catch(err => {
+          console.log("Failed to load users: " + err);
+          });
+
     }
   },
   computed: {
@@ -59,7 +83,8 @@ export default {
       } else {
         return false;
       }
-    }
+    },
+    
   },
   
 };
