@@ -204,7 +204,7 @@ export default {
       this.$root.updateLocations();
     },
     createRide: function(){
-        console.log("Create Ride");
+        console.log("111111");
         this.update();
         this.newRide = {};
         this.dialogType = "create";

@@ -90,8 +90,6 @@ new Vue({
           }
         })
       },
-<<<<<<< HEAD
-=======
       updateUsers: function(){
         console.log("Updating users...")
         this.$axios 
@@ -122,8 +120,6 @@ new Vue({
           }
         })
       },
-      
->>>>>>> 7c5f6d0144d60e0286c8f2b666a6c1b4a30ab945
   },
   router,
   vuetify,
