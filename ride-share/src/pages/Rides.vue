@@ -12,17 +12,30 @@
       >
       
         <template v-slot:item.action="{ item }">
-          <v-icon small @click="deleteRide(item)">
-            mdi-delete
+          <v-icon small class="ml-2" @click="driveClicked(item)">
+            mdi-seat
+          </v-icon>
+          <v-icon small class="ml-2" @click="driveClicked(item)">
+            mdi-steering
           </v-icon>
           <v-icon small class="ml-2" @click="editRide(item)">
             mdi-pencil
+          </v-icon>
+          <v-icon small @click="deleteClicked(item)">
+            mdi-delete
           </v-icon>
         </template>
       </v-data-table>
       <br>
    
       <div class="text-xs-center">
+        <confirm
+        :show=showConfirm
+        :header=confirmHeader
+        @confirm="confirmFunction"
+        @cancel="cancelConfirm"
+        ></confirm>
+
         <v-dialog v-model="createVisible" width="800">
           <v-card>
             <v-card-title primary-title>
@@ -121,6 +134,7 @@
 </template>
 
 <script>
+import Confirm from "../components/Confirm.vue";
 
 export default {
   name: "SignUpPage",
@@ -128,7 +142,9 @@ export default {
   created(){
     this.update();
   },
-
+  components:{
+    "confirm":Confirm,
+  },
   data: function() {
     return {
       headers: [
@@ -143,6 +159,8 @@ export default {
 
       editId: "",
       valid: false, // Are all the fields in the form valid?
+      showConfirm: false,
+      confirmHeader: "",
 
       newRide: {},
 
@@ -156,6 +174,9 @@ export default {
       dialogVisible: false,
       createVisible: false,
       dialogType: "",
+      deletingRide: null,
+      drivingRide: null,
+      confirmFunction: this.addDriver,
 
       // Validation rules for the form fields. This functionality is an extension
       // that's part of the Vuetify package. Each rule is a list of functions
@@ -270,7 +291,18 @@ export default {
         .catch(err => this.showDialog("Failed", err));
         this.editId = "";
     },
-    deleteRide: function(ride){
+    deleteClicked: function(ride){
+        console.log("Confirming...");
+        this.deletingRide=ride;
+        this.confirmHeader = "Delete ride?";
+        this.confirmFunction = this.deleteRide;
+        this.showConfirm=true;
+
+    },
+    deleteRide: function(){
+        this.confirmHeader = "";
+        this.showConfirm=false;
+        let ride=this.deletingRide;
         console.log("Delete Ride");
         console.log(ride);
         this.$root.updateRides();
@@ -312,6 +344,29 @@ export default {
         // Only navigate away from the sign-up page if we were successful.
         // this.$router.push({ name: "accounts" });
       }
+    },
+    cancelConfirm: function(){
+      this.showConfirm=false;
+    },
+    driveClicked: function(ride){
+        console.log("Confirming...");
+        this.drivingRide=ride;
+        this.confirmHeader = "Drive for this ride?";
+        this.confirmFunction = this.addDriver;
+        this.showConfirm=true;
+
+    },
+    addDriver: function(){
+      this.showConfirm=false;
+      this.confirmHeader="";
+      console.log("Adding Driver");
+      let ride = this.drivingRide;
+
+      this.$axios
+      .post("/rides/" + ride.id + "/drivers",this.$root.currentUser)
+      .then(result=>{
+        console.log("Got result:",result);
+      })
     }
   },
 
