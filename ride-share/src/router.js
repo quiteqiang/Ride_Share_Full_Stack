@@ -6,6 +6,7 @@ import SignIn from "./pages/SignIn.vue";
 import About from "./pages/About.vue";
 import Accounts from "./pages/Accounts.vue";
 import Rides from "./pages/Rides.vue";
+import Admin from "./pages/Admin.vue";
 
 
 Vue.use(Router);
@@ -19,7 +20,7 @@ export default new Router({
     { name: "about-us", path: "/about-us", component: About },
     { name: "accounts", path: "/accounts", component: Accounts },
     { name: "rides", path: "/rides", component: Rides},
-    { name: "admin", path: "/admin"}
+    { name: "admin", path: "/admin",component: Admin},
 
   ]
 });

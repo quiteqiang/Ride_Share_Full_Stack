@@ -33,13 +33,10 @@ new Vue({
               let i = 0;
               for (i in result.data){
                 this.rides.push(result.data[i].firstName + " " + result.data[i].lastName);
+                console.log("Result--------");
+                console.log(result);
               }
               this.rides =  result.data;
-            // } else {
-              // console.log("Failed to load rides: ");
-              // console.log(result);
-
-            // }
           }
         });
         //update this.rides
@@ -62,10 +59,6 @@ new Vue({
 
               return this.vehicles;
 
-            // } else {
-              // console.log(result.data);
-              // return (result.data.msge)
-          // }
           }
           else {
             console.log(result.data);
@@ -89,11 +82,6 @@ new Vue({
               console.log(this.locations);
 
               return this.locations;
-
-            // } else {
-              // console.log(result.data);
-              // return (result.data.msge)
-          // }
           }
           else {
             console.log(result.data);
@@ -101,7 +89,6 @@ new Vue({
           }
         })
       },
-      
   },
   router,
   vuetify,

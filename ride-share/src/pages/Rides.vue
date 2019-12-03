@@ -187,8 +187,8 @@ export default {
         this.update();
         this.newRide = {};
         this.dialogType = "create";
-        this.dialogHeader = "Create Ride"
-        this.dialogText = "Fill in the following values and submit to create a new ride."
+        this.dialogHeader = "Create Ride";
+        this.dialogText = "Fill in the following values and submit to create a new ride.";
         this.createVisible = true;
     },
     createRidePost: function() {
