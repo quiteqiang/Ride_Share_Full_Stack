@@ -176,7 +176,7 @@ export default {
       dialogType: "",
       deletingRide: null,
       drivingRide: null,
-      confirmFunction: null,
+      confirmFunction: this.addDriver,
 
       // Validation rules for the form fields. This functionality is an extension
       // that's part of the Vuetify package. Each rule is a list of functions
@@ -359,12 +359,14 @@ export default {
     addDriver: function(){
       this.showConfirm=false;
       this.confirmHeader="";
-      this.confirmFunction=null;
       console.log("Adding Driver");
-      this.drivingRide;
+      let ride = this.drivingRide;
 
       this.$axios
-      .post("/rides")
+      .post("/rides/" + ride.id + "/drivers",this.$root.currentUser)
+      .then(result=>{
+        console.log("Got result:",result);
+      })
     }
   },
 

@@ -13,23 +13,24 @@
     <!-- <v-btn text v-bind:to="{ name: 'home-page' }">Home</v-btn> -->
     <v-btn text v-bind:to="{ name: 'rides' }">Rides</v-btn>
     <v-btn text v-bind:to="{ name: 'admin' }">Admin</v-btn>
+    <v-btn v-if="!currentUser" text v-bind:to="{ name: 'sign-in' }">Sign In</v-btn>
 
-    <v-menu offset-y>
+    <v-menu v-if="currentUser" offset-y>
       <template v-slot:activator="{ on }">
         <v-btn text v-on="on">
-          <span v-if="currentUser">{{currentUser}}</span>
+          <span v-if="currentUser">{{currentUser.name}}</span>
           <span v-else> Sign In </span>
           <v-icon dark>mdi-menu-down</v-icon>
         </v-btn>
       </template>
 
       <v-list>
-        <v-list-item  v-if="!currentUser" v-bind:to="{ name: 'sign-in' }">
+        <!-- <v-list-item  v-if="!currentUser" v-bind:to="{ name: 'sign-in' }">
           <v-list-item-title>Sign In</v-list-item-title>
         </v-list-item>
         <v-list-item  v-if="!currentUser" v-bind:to="{ name: 'sign-up' }">
           <v-list-item-title>Sign Up</v-list-item-title>
-        </v-list-item>
+        </v-list-item> -->
         <v-list-item v-if="currentUser" v-on:click="signOut">
           <v-list-item-title>Sign Out</v-list-item-title>
         </v-list-item>

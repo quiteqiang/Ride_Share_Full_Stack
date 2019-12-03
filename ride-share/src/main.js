@@ -17,6 +17,7 @@ new Vue({
     rides:[],
     vehicles:[],
     locations:[],
+    passengers:[],
   },
   computed: {
 
@@ -89,6 +90,36 @@ new Vue({
               console.log(this.locations);
 
               return this.locations;
+
+            // } else {
+              // console.log(result.data);
+              // return (result.data.msge)
+          // }
+          }
+          else {
+            console.log(result.data);
+            return (result.data.msge)
+          }
+        })
+      },
+      updateUsers: function(){
+        console.log("Updating users...")
+        this.$axios 
+        .get("/passengers",{})
+        .then(result=>{
+          if (result.status === 200) {
+            // if (result.data.ok) {
+              this.passengers=[];
+              let i = 0;
+              for (i in result.data){
+                this.passengers.push(result.data[i]);
+                this.passengers[i]["name"]=this.passengers[i]["firstName"] + " " + this.passengers[i]["lastName"];
+
+              }
+              console.log("Passengers:");
+              console.log(this.passengers);
+
+              return this.passengers;
 
             // } else {
               // console.log(result.data);
