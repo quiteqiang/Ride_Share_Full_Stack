@@ -18,13 +18,13 @@ new Vue({
     vehicles:[],
     locations:[],
     passengers:[],
+    drivers:[],
   },
   computed: {
 
   },
   methods:{
       updateRides: function(){
-        console.log("Updating Rides...")
         this.$axios
         .get("/rides", {})
         .then(result => {
@@ -37,8 +37,8 @@ new Vue({
               }
               this.rides =  result.data;
             // } else {
-              // console.log("Failed to load rides: ");
-              // console.log(result);
+              // 
+              // 
 
             // }
           }
@@ -58,18 +58,18 @@ new Vue({
                 this.vehicles.push(result.data[i]);
                 this.vehicles[i]["name"]=this.vehicles[i]["make"] + " " + this.vehicles[i]["model"];
               }
-              console.log("Vehicles:");
-              console.log(this.vehicles);
+              
+              
 
               return this.vehicles;
 
             // } else {
-              // console.log(result.data);
+              // 
               // return (result.data.msge)
           // }
           }
           else {
-            console.log(result.data);
+            
             return (result.data.msge)
           }
         })
@@ -86,18 +86,18 @@ new Vue({
               for (i in result.data){
                 this.locations.push(result.data[i]);
               }
-              console.log("Locations:");
-              console.log(this.locations);
+              
+              
 
               return this.locations;
 
             // } else {
-              // console.log(result.data);
+              // 
               // return (result.data.msge)
           // }
           }
           else {
-            console.log(result.data);
+            
             return (result.data.msge)
           }
         })
@@ -116,22 +116,37 @@ new Vue({
                 this.passengers[i]["name"]=this.passengers[i]["firstName"] + " " + this.passengers[i]["lastName"];
 
               }
-              console.log("Passengers:");
-              console.log(this.passengers);
+              
+              
 
               return this.passengers;
 
             // } else {
-              // console.log(result.data);
+              // 
               // return (result.data.msge)
           // }
           }
           else {
-            console.log(result.data);
+            
             return (result.data.msge)
           }
         })
       },
+      updateDrivers: function(){
+        this.$axios
+        .get("/drivers", {})
+        .then(result => {
+          if (result.status === 200) {
+              this.drivers=[];
+              let i = 0;
+              for (i in result.data){
+                this.drivers.push(result.data[i].firstName + " " + result.data[i].lastName);
+              }
+              this.drivers =  result.data;
+            
+          }
+        });
+      }
       
   },
   router,

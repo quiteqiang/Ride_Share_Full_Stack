@@ -167,6 +167,31 @@ async function init() {
         return data;
       }
     },
+    {
+      method: "POST",
+      path: "/passengers",
+      config: {
+        description: "Create a passenger/Sign Up",
+      },
+      handler: async (request,h) => {
+        console.log("Adding rider:");
+        console.log(request.payload);
+        const newdataRide = await passenger.query().insert(request.payload);
+        
+        if (newdataRide){
+          return {
+            ok:true,
+            msge: `Created passenger  ${request.payload.firstName}`
+          };
+        }
+        else {
+          return {
+            ok:false,
+            msge: `Couldn't create passenger`
+          };
+        }
+      }
+    },
     { 
       method: "GET",
       path: "/drivers",
@@ -206,6 +231,28 @@ async function init() {
         console.log("Locations: ");
         console.log(data);
         return data;
+      }
+    },
+    {
+      method: "POST",
+      path:"/rides/{id}/drivers",
+      config:{
+        description: "Add a driver to a ride"
+      },
+      handler: async (request, h)=>{
+        const result = await ride.query().joinRelation('drivers').where('id',request.params.id);
+        if (result) {
+          return {
+            ok: true,
+            msge: `Updated ride '${request.params.id}'`
+          };
+        }
+        else {
+          return {
+            ok : false,
+            msge:  `Couldn't update ride '${request.params.id}'`
+          }
+        }
       }
     },
     
