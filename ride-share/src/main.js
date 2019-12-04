@@ -59,7 +59,6 @@ new Vue({
               console.log(this.vehicles);
 
               return this.vehicles;
-
           }
           else {
             console.log(result.data);
