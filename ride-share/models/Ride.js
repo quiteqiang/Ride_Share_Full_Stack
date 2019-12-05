@@ -13,8 +13,8 @@ class Ride extends Model {
                 join: {
                     from: 'ride.id',
                     through: {
-                        from: 'drivers.rideId',
-                        to: 'drivers.driverId'
+                        from: 'drivers.rideid',
+                        to: 'drivers.driverid'
                     },
                     to: 'driver.id'
                 }

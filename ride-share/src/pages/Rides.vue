@@ -12,10 +12,10 @@
       >
 
         <template v-slot:item.action="{ item }">
-          <v-icon small class="ml-2" @click="driveClicked(item)">
+          <v-icon  small class="ml-2" @click="driveClicked(item)">
             mdi-seat
           </v-icon>
-          <v-icon small class="ml-2" @click="driveClicked(item)">
+          <v-icon v-if="isDriver" small class="ml-2" @click="driveClicked(item)">
             mdi-steering
           </v-icon>
           <v-icon small class="ml-2" @click="editRide(item)">
@@ -176,7 +176,7 @@ export default {
       dialogType: "",
       deletingRide: null,
       drivingRide: null,
-      confirmFunction: this.addDriver,
+      confirmFunction: this.drive,
 
       // Validation rules for the form fields. This functionality is an extension
       // that's part of the Vuetify package. Each rule is a list of functions
@@ -202,6 +202,8 @@ export default {
       this.$root.updateRides();  
       this.$root.updateVehicles();
       this.$root.updateLocations();
+      this.$root.updateDrivers();
+
     },
     createRide: function(){
         console.log("111111");
@@ -258,8 +260,6 @@ export default {
     },
     editRideUpdate: function() {
       this.hideDialog();
-      console.log("Editing ride...");
-      console.log(this.editId);
       this.$axios
         .put("/rides/"+this.editId, {
           date: this.newRide.date,
@@ -289,7 +289,6 @@ export default {
         this.editId = "";
     },
     deleteClicked: function(ride){
-        console.log("Confirming...");
         this.deletingRide=ride;
         this.confirmHeader = "Delete ride?";
         this.confirmFunction = this.deleteRide;
@@ -300,8 +299,6 @@ export default {
         this.confirmHeader = "";
         this.showConfirm=false;
         let ride=this.deletingRide;
-        console.log("Delete Ride");
-        console.log(ride);
         this.$root.updateRides();
         this.$axios
         .delete("/rides/"+ride.id, ride)
@@ -310,8 +307,6 @@ export default {
           // appropriate dialog.
           if (result.status === 200) {
             if (result.data.ok) {
-              console.log("Success");
-              console.log(result.data);
               this.update();
               this.showDialog("Success", result.data.msge);
             } else {
@@ -322,7 +317,6 @@ export default {
         .catch(err => this.showDialog("Failed", err));
     },
     showPrompt: function(){
-        console.log("Show Prompt");
     },
     // Helper method to display the dialog box with the appropriate content.
     showDialog: function(header, text) {
@@ -346,17 +340,15 @@ export default {
       this.showConfirm=false;
     },
     driveClicked: function(ride){
-        console.log("Confirming...");
         this.drivingRide=ride;
         this.confirmHeader = "Drive for this ride?";
-        this.confirmFunction = this.addDriver;
+        this.confirmFunction = this.drive;
         this.showConfirm=true;
 
     },
-    addDriver: function(){
+    drive: function(){
       this.showConfirm=false;
       this.confirmHeader="";
-      console.log("Adding Driver");
       let ride = this.drivingRide;
 
       this.$axios
@@ -381,6 +373,27 @@ export default {
     locations: function(){
       return this.$root.locations;
     },
+    currentUser: function() {
+      if (this.$root.currentUser) {
+        return this.$root.currentUser;
+      } else {
+        return false;
+      }
+    },
+    isDriver: function(){
+      let currentUser=this.$root.currentUser;
+      
+      if (!currentUser){
+        return false;
+      }
+      let i = {};
+      for (i of this.$root.drivers){
+        if (currentUser.firstName==i.firstname && currentUser.lastName==i.lastname){
+          return true;
+        }
+      }
+      return false;
+    }
   }
 };
 </script>

@@ -13,9 +13,10 @@ class Passenger extends Model {
                 join: {
                     from: 'passenger.id',
                     through: {
-                        from: passengers.passengerId,
-                        to: rideId
-                    }
+                        from: "passengers.passengerId",
+                        to: "passengers.rideId"
+                    },   //TODO Figure this out
+                    to:'ride.id'
                 }
 
             }

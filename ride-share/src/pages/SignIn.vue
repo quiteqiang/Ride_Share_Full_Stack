@@ -23,8 +23,16 @@
         
       <h2>Sign Up As Rider</h2>
       <v-text-field
-      label="Username"
-      v-model="tempSignUp"
+      label="First name"
+      v-model="signUpFirstName"
+      ></v-text-field>
+      <v-text-field
+      label="Last name"
+      v-model="signUpLastName"
+      ></v-text-field>
+      <v-text-field
+      label="Phone number"
+      v-model="signUpPhoneNumber"
       ></v-text-field>
 
       <v-btn  v-on:click="signUp">Sign Up</v-btn>
@@ -42,7 +50,10 @@ export default {
   data() {
     return{
       tempUser: "",
-      tempSignUp: "",
+      signUpFirstName: "",
+      signUpLastName: "",
+      signUpPhoneNumber: "",
+
       allUsers: [],
     } 
   },
@@ -65,7 +76,28 @@ export default {
       this.$root.currentUser = null;
     },
     signUp: function(){
-      this.$root.currentUser = this.tempUser;
+      let data = {
+        firstName:this.signUpFirstName,
+          lastName:this.signUpLastName,
+          Phone:this.signUpPhoneNumber
+      };
+      
+      console.log(data);
+      this.$axios
+        .post("/passengers", data)
+        .then(result => {
+        this.$root.updateRides();     
+          if (result.status === 200) {
+            if (result.data.ok) {
+              this.accountCreated = true;
+              this.$root.rides.push(this.newRide)
+              console.log(result);
+            } else {
+              console.log(result.err);
+            }
+          }
+        })
+        .catch(err => this.showDialog("Failed", err));
     },
     
   },
