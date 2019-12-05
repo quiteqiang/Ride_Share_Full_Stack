@@ -18,6 +18,7 @@ new Vue({
     vehicles:[],
     locations:[],
     passengers:[],
+    vehicle_type:[],
   },
   computed: {
 
@@ -119,6 +120,25 @@ new Vue({
           }
         })
       },
+      updateVehicleType: function(){
+          console.log("Updating Vehicle_Type...")
+          this.$axios
+              .get("/vehicle_type", {})
+              .then(result => {
+                  if (result.status === 200) {
+                      // if (result.data.ok) {
+                      this.vehicle_type=[];
+                      let i = 0;
+                      for (i in result.data){
+                          this.vehicle_type.push(result.data[i].firstName + " " + result.data[i].lastName);
+                          console.log("Result--------");
+                          console.log(result);
+                      }
+                      this.vehicle_type =  result.data;
+                  }
+              });
+          //update this.rides
+      }
   },
   router,
   vuetify,

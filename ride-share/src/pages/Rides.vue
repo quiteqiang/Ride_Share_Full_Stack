@@ -216,8 +216,6 @@ export default {
       console.log(this.newRide);
       this.$root.updateRides();
       this.hideDialog();
-
-
       // Haven't been successful yet.
       this.accountCreated = false;
 

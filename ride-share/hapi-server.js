@@ -27,6 +27,7 @@ const location = require("./models/Location");
 const vehicle_type = require("./models/Vehicle_type");
 const passenger = require("./models/Passenger");
 
+
 // Hapi
 const Joi = require("@hapi/joi"); // Input validation
 const Hapi = require("@hapi/hapi"); // Server
@@ -76,7 +77,7 @@ async function init() {
           fromlocationid: request.payload.fromlocationid,
           tolocationid: request.payload.tolocationid,
         });
-        
+
         if (newRide){
           return {
             ok:true,
@@ -127,6 +128,28 @@ async function init() {
       }
     },
     {
+      method: "PUT",
+      path:"/vehicles/{id}",
+      config:{
+        description: "Edit a vehicle"
+      },
+      handler: async (request, h)=>{//need to change
+        const result = await vehicle.query().where('id',request.params.id).update(request.payload);
+        if (result) {
+          return {
+            ok: true,
+            msge: `Updated ride '${request.params.id}'`
+          };
+        }
+        else {
+          return {
+            ok : false,
+            msge:  `Couldn't update ride '${request.params.id}'`
+          }
+        }
+      }
+    },
+    {
       method: "DELETE",
       path:"/rides/{id}",
       config:{
@@ -134,6 +157,34 @@ async function init() {
       },
       handler: async (request, h)=>{
         const result = await ride.query().deleteById(request.params.id);
+        // console.log("Deleting row:")
+        // console.log(await ride.query());
+
+        // const result = ride.query().delete().where("id",request.params.id);
+        console.log("Delete Result:");
+        console.log(result);
+        if (result) {
+          return {
+            ok: true,
+            msge: `Deleted account '${request.params.id}'`
+          };
+        }
+        else {
+          return {
+            ok : false,
+            msge:  `Couldn't delete account '${request.params.id}'`
+          }
+        }
+      }
+    },
+    {
+      method: "DELETE",
+      path:"/vehicles/{id}",
+      config:{
+        description: "Delete a ride"
+      },
+      handler: async (request, h)=>{
+        const result = await vehicle.query().deleteById(request.params.id);///need to change
         // console.log("Deleting row:")
         // console.log(await ride.query());
 
@@ -232,7 +283,7 @@ async function init() {
     },
     {
       method: "POST",
-      path: "/vehicle",
+      path: "/vehicles",
       config: {
         description: "Create a vehicle",
       },
@@ -240,7 +291,7 @@ async function init() {
         console.log("Create Vehicle");
         console.log(request.payload);
 
-        const newRide = await vehicle.query().insert({
+        const newVehicle = await vehicle.query().insert({
           make: request.payload.make,
           model: request.payload.model,
           color: request.payload.color,
@@ -251,7 +302,7 @@ async function init() {
           licensenumber: request.payload.licensenumber,
         });
 
-        if (newRide){
+        if (newVehicle){
           return {
             ok:true,
             msge: `Created vehicle model ${request.payload.model}`
@@ -264,7 +315,48 @@ async function init() {
           };
         }
       }
-    }
+    },
+    {
+      method: "POST",
+      path: "/vehicle_type",
+      config: {
+        description: "Create a vehicle_type",
+      },
+      handler: async (request,h) => {
+        console.log("Create vehicle_type");
+        console.log(request.payload);
+
+        const newVehicleType = await vehicle_type.query().insert({
+          type: request.payload.type,
+        });
+
+        if (newVehicleType){
+          return {
+            ok:true,
+            msge: `Created vehicle model ${request.payload.model}`
+          };
+        }
+        else {
+          return {
+            ok:false,
+            msge: `Couldn't create vehicle`
+          };
+        }
+      }
+    },
+    {
+    method: "GET",
+      path: "/vehicle_type",
+      config: {
+    description: "Retrieve all Vehicle Type"
+  },
+  handler: async (request, h) => {
+    const data= await vehicle_type.query();
+    console.log("Returning: ");
+    console.log(data);
+    return data;
+  }
+},
   ]);
   // server.route();
   //   {
