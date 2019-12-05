@@ -18,11 +18,8 @@ new Vue({
     vehicles:[],
     locations:[],
     passengers:[],
-<<<<<<< HEAD
     vehicle_type:[],
-=======
     drivers:[],
->>>>>>> 25341a14e0a0fc773555deaf406404bd181cb26b
   },
   computed: {
 
@@ -38,8 +35,8 @@ new Vue({
               let i = 0;
               for (i in result.data){
                 this.rides.push(result.data[i].firstName + " " + result.data[i].lastName);
-                console.log("Result--------");
-                console.log(result);
+                // console.log("Result--------");
+                // console.log(result);
               }
               this.rides =  result.data;
           }
@@ -47,7 +44,7 @@ new Vue({
         //update this.rides
       },
       updateVehicles: function(){
-        console.log("Updating vehicles...")
+        // console.log("Updating vehicles...")
         this.$axios 
         .get("/vehicles",{})
         .then(result=>{
@@ -71,7 +68,7 @@ new Vue({
         })
       },
       updateLocations: function(){
-        console.log("Updating locations...")
+        // console.log("Updating locations...")
         this.$axios 
         .get("/locations",{})
         .then(result=>{
@@ -94,7 +91,7 @@ new Vue({
         })
       },
       updateUsers: function(){
-        console.log("Updating users...")
+        // console.log("Updating users...")
         this.$axios 
         .get("/passengers",{})
         .then(result=>{
@@ -123,9 +120,8 @@ new Vue({
           }
         })
       },
-<<<<<<< HEAD
       updateVehicleType: function(){
-          console.log("Updating Vehicle_Type...")
+          // console.log("Updating Vehicle_Type...")
           this.$axios
               .get("/vehicle_type", {})
               .then(result => {
@@ -135,15 +131,14 @@ new Vue({
                       let i = 0;
                       for (i in result.data){
                           this.vehicle_type.push(result.data[i].firstName + " " + result.data[i].lastName);
-                          console.log("Result--------");
-                          console.log(result);
+                          // console.log("Result--------");
+                          // console.log(result);
                       }
                       this.vehicle_type =  result.data;
                   }
               });
           //update this.rides
-      }
-=======
+      },
       updateDrivers: function(){
         this.$axios
         .get("/drivers", {})
@@ -158,9 +153,8 @@ new Vue({
             
           }
         });
-      }
+      },
       
->>>>>>> 25341a14e0a0fc773555deaf406404bd181cb26b
   },
   router,
   vuetify,

@@ -64,8 +64,6 @@ async function init() {
         description: "Create a ride",
       },
       handler: async (request,h) => {
-        console.log("Create Ride");
-        console.log(request.payload);
 
         const newRide = await ride.query().insert({
           date: request.payload.date,
@@ -100,8 +98,6 @@ async function init() {
       },
       handler: async (request, h) => {
         const data= await ride.query();
-        console.log("Returning: ");
-        console.log(data);
         return data;
       }
     },
@@ -157,12 +153,8 @@ async function init() {
       },
       handler: async (request, h)=>{
         const result = await ride.query().deleteById(request.params.id);
-        // console.log("Deleting row:")
-        // console.log(await ride.query());
 
         // const result = ride.query().delete().where("id",request.params.id);
-        console.log("Delete Result:");
-        console.log(result);
         if (result) {
           return {
             ok: true,
@@ -185,12 +177,8 @@ async function init() {
       },
       handler: async (request, h)=>{
         const result = await vehicle.query().deleteById(request.params.id);///need to change
-        // console.log("Deleting row:")
-        // console.log(await ride.query());
 
         // const result = ride.query().delete().where("id",request.params.id);
-        console.log("Delete Result:");
-        console.log(result);
         if (result) {
           return {
             ok: true,
@@ -213,8 +201,6 @@ async function init() {
       },
       handler: async (request, h) => {
         const data= await passenger.query();
-        console.log("Returning: ");
-        console.log(data);
         return data;
       }
     },
@@ -225,8 +211,6 @@ async function init() {
         description: "Create a passenger/Sign Up",
       },
       handler: async (request,h) => {
-        console.log("Adding rider:");
-        console.log(request.payload);
         const newdataRide = await passenger.query().insert(request.payload);
         
         if (newdataRide){
@@ -251,8 +235,6 @@ async function init() {
       },
       handler: async (request, h) => {
         let drivers =  await driver.query();
-        console.log("Drivers: ");
-        console.log(drivers);
         return drivers;
         
       }
@@ -265,8 +247,6 @@ async function init() {
       },
       handler: async (request, h) => {
         const data= await vehicle.query();
-        console.log("Vehicles: ");
-        console.log(data);
         return data;
       }
     },
@@ -279,8 +259,6 @@ async function init() {
       },
       handler: async (request, h) => {
         const data= await location.query();
-        console.log("Locations: ");
-        console.log(data);
         return data;
       }
     },
@@ -291,7 +269,12 @@ async function init() {
         description: "Add a driver to a ride"
       },
       handler: async (request, h)=>{
-        const result = await ride.query().joinRelation('drivers').where('id',request.params.id);
+        // const result = await ride.query().joinRelation('drivers').where('id',request.params.id);
+        const singleRide = await ride.query().findById(request.params.id);
+        const singleDriver = await driver.query().findById(request.payload.id);
+        result = await singleRide.$relatedQuery('drivers').relate(singleDriver);
+
+
         if (result) {
           return {
             ok: true,
@@ -305,6 +288,32 @@ async function init() {
           }
         }
       },
+      {
+        method: "POST",
+        path:"/rides/{id}/passengers",
+        config:{
+          description: "Add a passenger to a ride"
+        },
+        handler: async (request, h)=>{
+          // const result = await ride.query().joinRelation('drivers').where('id',request.params.id);
+          const singleRide = await ride.query().findById(request.params.id);
+          const singlePassenger = await passenger.query().findById(request.payload.id);
+          result = await singleRide.$relatedQuery('passengers').relate(singlePassenger);
+  
+  
+          if (result) {
+            return {
+              ok: true,
+              msge: `Updated ride '${request.params.id}'`
+            };
+          }
+          else {
+            return {
+              ok : false,
+              msge:  `Couldn't update ride '${request.params.id}'`}
+            }
+          }
+        },
     {
       method: "PUT",
       path:"/vehicle/{id}",
@@ -334,8 +343,6 @@ async function init() {
         description: "Create a vehicle",
       },
       handler: async (request,h) => {
-        console.log("Create Vehicle");
-        console.log(request.payload);
 
         const newVehicle = await vehicle.query().insert({
           make: request.payload.make,
@@ -369,8 +376,6 @@ async function init() {
         description: "Create a vehicle_type",
       },
       handler: async (request,h) => {
-        console.log("Create vehicle_type");
-        console.log(request.payload);
 
         const newVehicleType = await vehicle_type.query().insert({
           type: request.payload.type,
@@ -398,8 +403,6 @@ async function init() {
   },
   handler: async (request, h) => {
     const data= await vehicle_type.query();
-    console.log("Returning: ");
-    console.log(data);
     return data;
   }
 },

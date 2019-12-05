@@ -12,7 +12,7 @@
       >
 
         <template v-slot:item.action="{ item }">
-          <v-icon  small class="ml-2" @click="driveClicked(item)">
+          <v-icon  v-if="currentUser" small class="ml-2" @click="rideClicked(item)">
             mdi-seat
           </v-icon>
           <v-icon v-if="isDriver" small class="ml-2" @click="driveClicked(item)">
@@ -176,6 +176,8 @@ export default {
       dialogType: "",
       deletingRide: null,
       drivingRide: null,
+      ridingRide: null,
+
       confirmFunction: this.drive,
 
       // Validation rules for the form fields. This functionality is an extension
@@ -206,7 +208,6 @@ export default {
 
     },
     createRide: function(){
-        console.log("111111");
         this.update();
         this.newRide = {};
         this.dialogType = "create";
@@ -215,7 +216,6 @@ export default {
         this.createVisible = true;
     },
     createRidePost: function() {
-      console.log(this.newRide);
       this.$root.updateRides();
       this.hideDialog();
       // Haven't been successful yet.
@@ -354,9 +354,41 @@ export default {
       this.$axios
       .post("/rides/" + ride.id + "/drivers",this.$root.currentUser)
       .then(result=>{
-        console.log("Got result:",result);
+        if (result.status === 200) {
+            if (result.data.ok) {
+              this.update();
+              this.showDialog("Success", result.data.msge);
+            } else {
+              this.showDialog("Sorry", result.data.msge);
+            }
+          }
       })
-    }
+    },
+    rideClicked: function(ride){
+        this.ridingRide=ride;
+        this.confirmHeader = "Join this ride as passenger?";
+        this.confirmFunction = this.ride;
+        this.showConfirm=true;
+
+    },
+    ride: function(){
+      this.showConfirm=false;
+      this.confirmHeader="";
+      let ride = this.ridingRide;
+
+      this.$axios
+      .post("/rides/" + ride.id + "/passengers",this.$root.currentUser)
+      .then(result=>{
+        if (result.status === 200) {
+            if (result.data.ok) {
+              this.update();
+              this.showDialog("Success", result.data.msge);
+            } else {
+              this.showDialog("Sorry", result.data.msge);
+            }
+          }
+      })
+    },
   },
 
   computed: {
