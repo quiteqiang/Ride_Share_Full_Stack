@@ -19,7 +19,19 @@ class Ride extends Model {
                     to: 'driver.id'
                 }
             },
-            ride: {
+            passengers: {
+                relation: Model.ManyToManyRelation,
+                modelClass: require('./Passenger'),
+                join: {
+                    from: 'ride.id',
+                    through: {
+                        from: 'passengers.rideid',
+                        to: 'passengers.passengerid'
+                    },
+                    to: 'passenger.id'
+                }
+            },
+            vehicle: {
                 relation: Model.HasOneRelation,
                 modelClass: require('./Vehicle'),
                 join: {

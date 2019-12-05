@@ -12,7 +12,7 @@
     <!-- <v-btn text v-bind:to="{ name: 'sign-in' }">Sign In</v-btn> -->
     <!-- <v-btn text v-bind:to="{ name: 'home-page' }">Home</v-btn> -->
     <v-btn text v-bind:to="{ name: 'rides' }">Rides</v-btn>
-    <v-btn text v-bind:to="{ name: 'admin' }">Admin</v-btn>
+    <v-btn text v-if="currentUser" v-bind:to="{ name: 'admin' }">Admin</v-btn>
     <v-btn v-if="!currentUser" text v-bind:to="{ name: 'sign-in' }">Sign In</v-btn>
 
     <v-menu v-if="currentUser" offset-y>
