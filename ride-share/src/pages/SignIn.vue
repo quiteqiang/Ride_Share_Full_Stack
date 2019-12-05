@@ -86,7 +86,7 @@ export default {
       this.$axios
         .post("/passengers", data)
         .then(result => {
-        this.$root.updateRides();     
+        this.$root.updateUsers();     
           if (result.status === 200) {
             if (result.data.ok) {
               this.accountCreated = true;

@@ -227,6 +227,29 @@ async function init() {
         }
       }
     },
+    {
+      method: "POST",
+      path: "/drivers",
+      config: {
+        description: "Create a driver/Sign Up as driver",
+      },
+      handler: async (request,h) => {
+        const newdata = await driver.query().insert(request.payload);
+        
+        if (newdata){
+          return {
+            ok:true,
+            msge: `Created driver  ${request.payload.firstName}`
+          };
+        }
+        else {
+          return {
+            ok:false,
+            msge: `Couldn't create driver`
+          };
+        }
+      }
+    },
     { 
       method: "GET",
       path: "/drivers",

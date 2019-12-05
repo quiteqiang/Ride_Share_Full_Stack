@@ -2,6 +2,14 @@
     <v-container>
         <div>
             <h4 class="display-1">Administrator</h4>
+            <h5 class="">Sign up as ride share driver</h5>
+            <v-text-field
+            label="License number"
+            v-model="licenseNumber"
+            ></v-text-field>
+            <v-btn v-bind:disabled="!licenseNumber" color="primary" class="" v-on:click="signUpDriver">Sign Up As Driver</v-btn>
+            <br>
+            <br>
             <v-btn color="primary" class="" v-on:click="createVehicle">New Vehicle</v-btn>
             <v-data-table
                     class="elevation-1"
@@ -9,6 +17,9 @@
                     v-bind:items="vehicles"
             >
                 <template v-slot:item.action="{ item }">
+                    <v-icon small class="ml-2" @click="registerDriveVehicle(item)">
+                        mdi-steering
+                    </v-icon>
                     <v-icon small class="ml-2" @click="editVehicle(item)">
                         mdi-pencil
                     </v-icon>
@@ -79,7 +90,7 @@
                                 >
                                 </v-text-field>
                                 <v-text-field
-                                        v-model="newVehicle.licensenumber"
+                                        v-model="newVehicle.licenseNumber"
                                         label = "License Number"
                                         required
                                 >
@@ -140,6 +151,7 @@
             createVisible: false,
             createVisible1: false,
             dialogType:"",
+            licenseNumber:"",
 
             showConfirm: false,
             confirmHeader: "",
@@ -346,7 +358,34 @@
             this.dialogHeader = header;
             this.dialogText = text;
             this.dialogVisible1 = true;
-        }
+        },
+        signUpDriver: function(){
+            if (!this.$root.currentUser){
+                return false;
+            }
+            let data = {
+                firstname: this.$root.currentUser.firstName,
+                lastname: this.$root.currentUser.lastName,
+                phone: this.$root.currentUser.Phone,
+                licensenumber: this.licenseNumber,
+        };
+            this.$axios
+                .post("/drivers", data)
+                .then(result => {
+                    this.$root.updateDrivers();     
+                    if (result.status === 200) {
+                        if (result.data.ok) {
+                        this.accountCreated = true;
+                        this.$root.rides.push(this.newRide)
+                        console.log(result);
+                        } else {
+                        console.log(result.err);
+                        }
+                    }
+                })
+                .catch(err => this.showDialog("Failed", err));
+        },
+    
     },
     computed: {
         vehicles: function(){
