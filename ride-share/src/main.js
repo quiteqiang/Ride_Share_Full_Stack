@@ -18,11 +18,8 @@ new Vue({
     vehicles:[],
     locations:[],
     passengers:[],
-<<<<<<< HEAD
     vehicle_type:[],
-=======
     drivers:[],
->>>>>>> 25341a14e0a0fc773555deaf406404bd181cb26b
   },
   computed: {
 
@@ -123,7 +120,6 @@ new Vue({
           }
         })
       },
-<<<<<<< HEAD
       updateVehicleType: function(){
           console.log("Updating Vehicle_Type...")
           this.$axios
@@ -142,8 +138,7 @@ new Vue({
                   }
               });
           //update this.rides
-      }
-=======
+      },
       updateDrivers: function(){
         this.$axios
         .get("/drivers", {})
@@ -159,8 +154,6 @@ new Vue({
           }
         });
       }
-      
->>>>>>> 25341a14e0a0fc773555deaf406404bd181cb26b
   },
   router,
   vuetify,
