@@ -10,7 +10,7 @@
         v-bind:headers="headers"
         v-bind:items="rides"
       >
-      
+
         <template v-slot:item.action="{ item }">
           <v-icon  small class="ml-2" @click="driveClicked(item)">
             mdi-seat
@@ -27,7 +27,7 @@
         </template>
       </v-data-table>
       <br>
-   
+
       <div class="text-xs-center">
         <confirm
         :show=showConfirm
@@ -206,15 +206,16 @@ export default {
 
     },
     createRide: function(){
+        console.log("111111");
         this.update();
         this.newRide = {};
         this.dialogType = "create";
-        this.dialogHeader = "Create Ride"
-        this.dialogText = "Fill in the following values and submit to create a new ride."
+        this.dialogHeader = "Create Ride";
+        this.dialogText = "Fill in the following values and submit to create a new ride.";
         this.createVisible = true;
     },
     createRidePost: function() {
-      // this.$root.rides.push(this.newRide);
+      console.log(this.newRide);
       this.$root.updateRides();
       this.hideDialog();
 
@@ -254,8 +255,8 @@ export default {
         this.update();
         this.editId=ride.id;
         this.dialogType = "edit";
-        this.dialogHeader = "Edit Ride"
-        this.dialogText = "Change values and press submit to edit ride."
+        this.dialogHeader = "Edit Ride";
+        this.dialogText = "Change values and press submit to edit ride.";
         this.newRide = ride;
         this.createVisible = true;
     },

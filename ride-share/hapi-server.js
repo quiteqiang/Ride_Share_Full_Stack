@@ -250,14 +250,69 @@ async function init() {
         else {
           return {
             ok : false,
-            msge:  `Couldn't update ride '${request.params.id}'`
+            msge:  `Couldn't update ride '${request.params.id}'`}
+          }
+        }
+      },
+    {
+      method: "PUT",
+      path:"/vehicle/{id}",
+      config:{
+        description: "Edit a vehicle"
+      },
+      handler: async (request, h)=>{
+        const result = await ride.query().where('id',request.params.id).update(request.payload);
+        if (result) {
+          return {
+            ok: true,
+            msge: `Updated vehicle '${request.params.id}'`
+          };
+        }
+        else {
+          return {
+            ok : false,
+            msge:  `Couldn't update vehicle '${request.params.id}'`
           }
         }
       }
     },
-    
-    
+    {
+      method: "POST",
+      path: "/vehicle",
+      config: {
+        description: "Create a vehicle",
+      },
+      handler: async (request,h) => {
+        console.log("Create Vehicle");
+        console.log(request.payload);
+
+        const newRide = await vehicle.query().insert({
+          make: request.payload.make,
+          model: request.payload.model,
+          color: request.payload.color,
+          vehicletypeid: request.payload.vehicletypeid,
+          capacity: request.payload.capacity,
+          mpg: request.payload.mpg,
+          licensestate: request.payload.licensestate,
+          licensenumber: request.payload.licensenumber,
+        });
+
+        if (newRide){
+          return {
+            ok:true,
+            msge: `Created vehicle model ${request.payload.model}`
+          };
+        }
+        else {
+          return {
+            ok:false,
+            msge: `Couldn't create vehicle`
+          };
+        }
+      }
+    }
   ]);
+  // server.route();
   //   {
   //     method: "POST",
   //     path: "/accounts",

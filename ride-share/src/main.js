@@ -34,13 +34,10 @@ new Vue({
               let i = 0;
               for (i in result.data){
                 this.rides.push(result.data[i].firstName + " " + result.data[i].lastName);
+                console.log("Result--------");
+                console.log(result);
               }
               this.rides =  result.data;
-            // } else {
-              // 
-              // 
-
-            // }
           }
         });
         //update this.rides
@@ -62,11 +59,6 @@ new Vue({
               
 
               return this.vehicles;
-
-            // } else {
-              // 
-              // return (result.data.msge)
-          // }
           }
           else {
             
@@ -90,11 +82,6 @@ new Vue({
               
 
               return this.locations;
-
-            // } else {
-              // 
-              // return (result.data.msge)
-          // }
           }
           else {
             
