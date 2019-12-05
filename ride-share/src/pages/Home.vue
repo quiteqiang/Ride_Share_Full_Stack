@@ -6,7 +6,6 @@
       <p class="body-1">Sign in to view your rides</p>
 
       <v-data-table
-        
         class="elevation-1"
         v-bind:headers="headers"
         v-bind:items="rides"
