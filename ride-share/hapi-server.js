@@ -20,6 +20,7 @@ objection.Model.knex(knex);
 
 // Models
 const driver = require("./models/Driver");
+const driverss = require("./models/Drivers");
 const vehicle = require("./models/Vehicle");
 const ride = require("./models/Ride");
 const state = require("./models/State");
@@ -251,26 +252,14 @@ async function init() {
     },
     { 
       method: "GET",
-      path: "/drivers",
-      config: {
-        description: "Retrieve all drivers"
-      },
-      handler: async (request, h) => {
-        let drivers =  await driver.query();
-        return drivers;
-        
-      }
-    },
-    {
-      method: "GET",
       path: "/driversid",
       config: {
         description: "Retrieve all drivers id"
       },
       handler: async (request, h) => {
-        let drivers =  await drivers.query();
-        return drivers;
-
+        let driversid =  await driverss.query();
+        return driversid;
+        
       }
     },
     { 
@@ -406,6 +395,19 @@ async function init() {
 
       },
     {
+      method:"GET",
+      path:"/drivers",
+      config:{
+        description: "Get all rides for a specified driver"
+      },
+      handler: async (request,h)=>{
+        const data = await ride.query().joinRelation("drivers");
+        console.log(data);
+        return data;
+      }
+
+    },
+    {
       method: "PUT",
       path:"/vehicle/{id}",
       config:{
@@ -486,19 +488,19 @@ async function init() {
         }
       }
     },
-    {
-      method:"GET",
-      path:"/drivers/{id}/rides",
-      config:{
-        description: "Get all rides for a specified driver"
-      },
-      handler: async (request,h)=>{
-        const data = await ride.query();
-        const rides = ride.relationMappings.drivers;
-        console.log(rides);
-        return {}
-      }
-    },
+    // {
+    //   method:"GET",
+    //   path:"/drivers/{id}/rides",
+    //   config:{
+    //     description: "Get all rides for a specified driver"
+    //   },
+    //   handler: async (request,h)=>{
+    //     const data = await ride.query();
+    //     const rides = ride.relationMappings.drivers;
+    //     console.log(rides);
+    //     return {}
+    //   }
+    // },
     {
     method: "GET",
       path: "/vehicle_type",
@@ -510,6 +512,17 @@ async function init() {
     return data;
   }
 },
+    // {
+    //   method: "GET",
+    //   path: "/vehicle_type",
+    //   config: {
+    //     description: "Retrieve all Vehicle Type"
+    //   },
+    //   handler: async (request, h) => {
+    //     const data= await vehicle_type.query();
+    //     return data;
+    //   }
+    // },
   ]);
   // server.route();
   //   {
