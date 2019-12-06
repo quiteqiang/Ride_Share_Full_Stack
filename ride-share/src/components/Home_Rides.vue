@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <div>
-            <p class="body-1">Up Coming Rides</p>
+            <p class="body-1">All Rides</p>
             <v-data-table
                     class="elevation-1"
                     v-bind:headers="headers"

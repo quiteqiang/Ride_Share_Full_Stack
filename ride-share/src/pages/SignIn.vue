@@ -72,6 +72,7 @@ export default {
     },
     signOut: function() {
       this.$root.currentUser = null;
+      this.$root.drivingRides = [];
     },
     signUp: function(){
       let data = {

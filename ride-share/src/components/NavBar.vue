@@ -45,6 +45,10 @@ export default {
   methods: {
     signOut: function() {
       this.$root.currentUser = null;
+      this.$root.drivingRides = [];
+      this.$root.ridingRides = [];
+
+
     },
     signIn: function() {
       this.$root.currentUser = "A User";

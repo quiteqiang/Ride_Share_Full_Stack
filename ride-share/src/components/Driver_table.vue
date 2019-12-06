@@ -1,13 +1,14 @@
 <template>
     <v-container>
         <div>
-            <p class="body-1">Sign in to view your rides as a Passanger</p>
+            <p v-if="ridingRides.length>0" class="body-1">Signed up to ride:</p>
             <!--//      <v-toolbar-title v-if="isDriver">Hello Driver: {{ currentUser.name }}</v-toolbar-title>-->
-            <v-toolbar-title>Hello: {{ currentUser.name }}</v-toolbar-title>
+            <!-- <v-toolbar-title>Hello: {{ currentUser.name }}</v-toolbar-title> -->
             <v-data-table
+                    v-if="ridingRides.length>0"
                     class="elevation-1"
                     v-bind:headers="headers"
-                    v-bind:items="rides"
+                    v-bind:items="ridingRides"
             >
             </v-data-table>
         </div>
@@ -32,7 +33,12 @@
         },
         methods:{
             update: function(){
-                this.$root.updateRides();
+                // this.$root.updateRides();
+                // this.$root.updateVehicles();
+                // this.$root.updateDrivers();
+                // this.$root.updateLocations();
+                // this.$root.updateRidingRides();
+
             },
         },
         computed: {
@@ -76,6 +82,9 @@
                 }
                 return false;
             },
+            ridingRides:function(){
+                return this.$root.ridingRides;
+            }
             // isPassager:function(){
             //   if (this.$root.currentUser in this.$root.user){
             //     return true;

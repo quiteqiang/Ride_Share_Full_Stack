@@ -365,19 +365,19 @@ async function init() {
       }
     },
 
-    {
-      method:"GET",
-      path:"/drivers/{id}/rides",
-      config:{
-        description: "Get all rides for a specified driver"
-      },
-      handler: async (request,h)=>{
-        const data = await ride.query();
-        const rides = ride.relationMappings.drivers;
-        console.log(rides);
-        return rides;
-      }
-    },
+    // {
+    //   method:"GET",
+    //   path:"/drivers/{id}/rides",
+    //   config:{
+    //     description: "Get all rides for a specified driver"
+    //   },
+    //   handler: async (request,h)=>{
+    //     const data = await ride.query();
+    //     const rides = ride.relationMappings.drivers;
+    //     console.log(rides);
+    //     return rides;
+    //   }
+    // },
     // {
     //   method:"GET",
     //   path:"/drivers/{id}/ridess",
@@ -487,19 +487,52 @@ async function init() {
         }
       }
     },
-    // {
-    //   method:"GET",
-    //   path:"/drivers/{id}/rides",
-    //   config:{
-    //     description: "Get all rides for a specified driver"
-    //   },
-    //   handler: async (request,h)=>{
-    //     const data = await ride.query();
-    //     const rides = ride.relationMappings.drivers;
-    //     console.log(rides);
-    //     return {}
-    //   }
-    // },
+    {
+      method:"GET",
+      path:"/drivers/{id}/rides",
+      config:{
+        description: "Get all rides for a specified driver"
+      },
+      handler: async (request,h)=>{
+        const data = await ride.query().eager("drivers");
+        let out = [];
+        let iRide = {};
+        for (iRide of data){
+          let driver = {};
+          for (driver of iRide.drivers){
+            if (driver.id==request.params.id){
+              out.push(iRide);
+              break;
+            }
+          }
+        }
+        return out;
+        
+      }
+    },
+    {
+      method:"GET",
+      path:"/riders/{id}/rides",
+      config:{
+        description: "Get all rides for a specified rider"
+      },
+      handler: async (request,h)=>{
+        const data = await ride.query().eager("passengers");
+        let out = [];
+        let iRide = {};
+        for (iRide of data){
+          let rider = {};
+          for (rider of iRide.passengers){
+            if (rider.id==request.params.id){
+              out.push(iRide);
+              break;
+            }
+          }
+        }
+        return out;
+        
+      }
+    },
     {
       method: "GET",
       path: "/vehicle_type",

@@ -2,12 +2,13 @@
   <v-container>
     <div>
       <h4 class="display-1">Welcome to TQ ride share!</h4>
-      <p class="body-1">Sign in to view your rides as Driver</p>
-      <v-toolbar-title>Hello: {{ currentUser.name }}</v-toolbar-title>
+      <p class="body-1" v-if="drivingRides.length>0">Signed up to drive:</p>
+      <!-- <v-toolbar-title>Hello: {{ currentUser.name }}</v-toolbar-title> -->
       <v-data-table
+        v-if="drivingRides.length>0"
         class="elevation-1"
         v-bind:headers="headers"
-        v-bind:items="rides"
+        v-bind:items="drivingRides"
       >
       </v-data-table>
       <Driver_table></Driver_table>
@@ -47,11 +48,21 @@ export default {
   methods:{
     update: function(){
       this.$root.updateRides();
+      this.$root.updateVehicles();
+      this.$root.updateDrivers();
+      this.$root.updateLocations();
+      this.$root.updateDrivingRides();
+      this.$root.updateRidingRides();
+
+
     },
   },
   computed: {
     // filteredRidesForDriver: function(){
     // },
+    drivingRides: function(){
+      return this.$root.drivingRides;
+    },
     rides: function() {
       if (this.$root.rides) {
         console.log(this.$root.rides);

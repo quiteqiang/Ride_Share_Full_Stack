@@ -20,6 +20,8 @@ new Vue({
     passengers:[],
     vehicle_type:[],
     drivers:[],
+    drivingRides:[],
+    ridingRides:[],
   },
   computed: {
   },
@@ -142,7 +144,32 @@ new Vue({
               });
           //update this.rides
       },
-
+      updateDrivingRides: function(){
+        this.$axios
+              .get("/drivers/"+this.currentUser.id+"/rides", {})
+              .then(result => {
+                console.log("Driving Rides:");
+                console.log(result);
+                  if (result.status === 200) {
+                    console.log("Driving Rides");
+                    console.log(result.data);
+                    this.drivingRides=result.data;
+                  }
+              });
+      },
+      updateRidingRides: function(){
+        this.$axios
+              .get("/riders/"+this.currentUser.id+"/rides", {})
+              .then(result => {
+                console.log("Riding Rides:");
+                console.log(result);
+                  if (result.status === 200) {
+                    console.log("riding Rides");
+                    console.log(result.data);
+                    this.ridingRides=result.data;
+                  }
+              });
+            }
       },
   router,
   vuetify,
