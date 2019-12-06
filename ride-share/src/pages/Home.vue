@@ -10,7 +10,7 @@
         v-bind:items="rides"
       >
       </v-data-table>
-      <Vehicle_type></Vehicle_type>
+      <Driver_table></Driver_table>
       <Home_Rides></Home_Rides>
       <Home_Passager></Home_Passager>
       <Home_Driver></Home_Driver>
@@ -18,7 +18,7 @@
   </v-container>
 </template>
 <script>
-  import Vehicle_type from "../components/Vehicle_type";
+  import Driver_table from "../components/Driver_table";
   import Home_Rides from "../components/Home_Rides";
   import Home_Passager from "../components/Home_Passager";
   import Home_Driver from "../components/Home_Driver";
@@ -27,7 +27,7 @@ export default {
     this.update();
   },
   components:{
-    "Vehicle_type":Vehicle_type,
+     "Driver_table":Driver_table,
     "Home_Rides":Home_Rides,
     "Home_Passager":Home_Passager,
     "Home_Driver":Home_Driver,
