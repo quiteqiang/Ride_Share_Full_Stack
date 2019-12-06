@@ -22,7 +22,6 @@ new Vue({
     drivers:[],
   },
   computed: {
-
   },
   methods:{
       updateRides: function(){
@@ -104,9 +103,6 @@ new Vue({
                 this.passengers[i]["name"]=this.passengers[i]["firstName"] + " " + this.passengers[i]["lastName"];
 
               }
-              
-              
-
               return this.passengers;
 
             // } else {
@@ -155,8 +151,8 @@ new Vue({
         });
       }
       },
-  
   router,
   vuetify,
-  render: h => h(App)
+   render: h => h(App)
+
 });

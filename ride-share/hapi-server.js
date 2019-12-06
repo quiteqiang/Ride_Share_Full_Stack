@@ -27,7 +27,6 @@ const location = require("./models/Location");
 const vehicle_type = require("./models/Vehicle_type");
 const passenger = require("./models/Passenger");
 
-
 // Hapi
 const Joi = require("@hapi/joi"); // Input validation
 const Hapi = require("@hapi/hapi"); // Server
@@ -260,6 +259,18 @@ async function init() {
         let drivers =  await driver.query();
         return drivers;
         
+      }
+    },
+    {
+      method: "GET",
+      path: "/driversid",
+      config: {
+        description: "Retrieve all drivers id"
+      },
+      handler: async (request, h) => {
+        let drivers =  await drivers.query();
+        return drivers;
+
       }
     },
     { 

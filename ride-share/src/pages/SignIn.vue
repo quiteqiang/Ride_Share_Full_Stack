@@ -15,9 +15,7 @@
 
       <p v-if="currentUser==false">Currently not signed in</p>
       <p v-else> Currently signed in as {{ currentUser.name }}</p>
-      <!-- <p>[Sign-in stuff goes here]</p> -->
       <v-btn color=primary :disabled=isLoggedIn  v-on:click="signIn">Sign In</v-btn>
-      <!-- <v-btn v-on:click="signOut" :disabled=!currentUser>Sign Out</v-btn> -->
       <br>
         <br>
         
@@ -81,7 +79,6 @@ export default {
           lastName:this.signUpLastName,
           Phone:this.signUpPhoneNumber
       };
-      
       console.log(data);
       this.$axios
         .post("/passengers", data)
@@ -122,7 +119,7 @@ export default {
       }
       return false;
     }
-    
+
   },
   
 };
