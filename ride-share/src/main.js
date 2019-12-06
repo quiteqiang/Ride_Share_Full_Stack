@@ -18,14 +18,19 @@ new Vue({
     vehicles:[],
     locations:[],
     passengers:[],
-    vehicle_type:[],
+    vehicleType:[],
     drivers:[],
     drivingRides:[],
     ridingRides:[],
+    currentDriver:{},
   },
   computed: {
   },
   methods:{
+      // updateCurrentDriver: function(){
+      //   console.log("Updating current driver...");
+          
+      // },
       updateRides: function(){
         this.$axios
         .get("/rides", {})
@@ -44,17 +49,32 @@ new Vue({
         //update this.rides
       },
       updateDrivers: function(){
+
           this.$axios
               .get("/drivers", {})
               .then(result => {
+
+                console.log(result);
                   if (result.status === 200) {
                       this.drivers=[];
                       let i = 0;
-                      console.log("111111111111");
                       for (i in result.data){
-                          this.drivers.push(result.data[i].firstName + " " + result.data[i].lastName);
+                          this.drivers.push({
+                            name:result.data[i].firstname + " " + result.data[i].lastname,
+                            firstName:result.data[i].firstname,
+                            lastName:result.data[i].lastname,
+                            phone:result.data[i].phone,
+                            licenseNumber:result.data[i].licensenumber,
+
+
+
+                          });
                       }
-                      this.drivers =  result.data;
+                      console.log("Drivers Updated");
+                      console.log(this.drivers);
+                      // this.drivers =  result.data;
+                      
+
 
                   }
               });
@@ -126,20 +146,25 @@ new Vue({
         })
       },
       updateVehicleType: function(){
-          // console.log("Updating Vehicle_Type...")
           this.$axios
               .get("/vehicle_type", {})
               .then(result => {
                   if (result.status === 200) {
                       // if (result.data.ok) {
-                      this.vehicle_type=[];
-                      let i = 0;
-                      for (i in result.data){
-                          this.vehicle_type.push(result.data[i].firstName + " " + result.data[i].lastName);
+                        console.log("Updating Vehicle_Type...")
+                        console.log(result.data);
+                      this.vehicleType=result.data;
+                      // let i = 0;
+                      // for (i in result.data){
+                          // this.vehicle_type.push(result.data[i].firstName + " " + result.data[i].lastName);
                           // console.log("Result--------");
                           // console.log(result);
-                      }
-                      this.vehicle_type =  result.data;
+                      // }
+                      // console.log(this.vehicle_type);
+                      // result.data=this.vehicle_type;
+                  }
+                  else {
+                    console.log("Error!");
                   }
               });
           //update this.rides

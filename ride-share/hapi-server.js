@@ -292,6 +292,7 @@ async function init() {
         description: "Add a driver to a ride"
       },
       handler: async (request, h)=>{
+        console.log("Add driver: " + request.params.id + ", " + request.payload.id);
         // const result = await ride.query().joinRelation('drivers').where('id',request.params.id);
         const singleRide = await ride.query().findById(request.params.id);
         const singleDriver = await driver.query().findById(request.payload.id);
@@ -519,7 +520,7 @@ async function init() {
       handler: async (request,h)=>{
         const data = await ride.query().eager("passengers");
         let out = [];
-        let iRide = {};
+        let iRide = {};rid
         for (iRide of data){
           let rider = {};
           for (rider of iRide.passengers){

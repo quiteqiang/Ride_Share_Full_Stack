@@ -1,10 +1,11 @@
 <template>
   <v-container>
     <div>
+
       <h4 class="display-1">Rides</h4>
-      <v-btn color="primary" dark class="" v-on:click="createRide">New Item</v-btn>
+      <v-btn color="primary" dark class="" v-if="currentUser" v-on:click="createRide">New Item</v-btn>
       
-      <v-btn color="" class="" v-on:click="update">Update</v-btn>
+      <!-- <v-btn color="" class="" v-on:click="update">Update</v-btn> -->
       <v-data-table
         class="elevation-1"
         v-bind:headers="headers"
@@ -15,7 +16,7 @@
           <v-icon  v-if="currentUser" small class="ml-2" @click="rideClicked(item)">
             mdi-seat
           </v-icon>
-          <v-icon v-if="isDriver" small class="ml-2" @click="driveClicked(item)">
+          <v-icon  small class="ml-2" @click="driveClicked(item)">
             mdi-steering
           </v-icon>
           <v-icon small class="ml-2" @click="editRide(item)">
@@ -350,7 +351,7 @@ export default {
       this.showConfirm=false;
       this.confirmHeader="";
       let ride = this.drivingRide;
-
+      console.log("")
       this.$axios
       .post("/rides/" + ride.id + "/drivers",this.$root.currentUser)
       .then(result=>{

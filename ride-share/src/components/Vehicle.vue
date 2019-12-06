@@ -65,12 +65,15 @@
                                         required
                                 >
                                 </v-text-field>
-                                <v-text-field
-                                        v-model="newVehicle.vehicletypeid"
-                                        label = "V_typeid"
-                                        required
-                                >
-                                </v-text-field>
+                                <v-autocomplete
+                                v-model="newVehicle.vehicletypeid"
+                                label="Vehicle Type"
+                                required
+                                :items="this.$root.vehicleType"
+                                item-text=type
+                                item-value=id
+                                ></v-autocomplete>
+                                
                                 <v-text-field
                                         v-model="newVehicle.capacity"
                                         label = "Capacity"
@@ -169,6 +172,7 @@
             this.$root.updateRides();
             this.$root.updateVehicles();
             this.$root.updateLocations();
+            this.$root.updateVehicleType();
         },
         addVehicle: function(){
             this.showConfirm=false;

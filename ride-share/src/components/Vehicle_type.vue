@@ -131,7 +131,7 @@
         },
         computed:{
             vehicle_type: function(){
-                return this.$root.vehicle_type;
+                return this.$root.vehicleType;
             },
         }
     }

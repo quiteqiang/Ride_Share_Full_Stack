@@ -60,7 +60,7 @@ export default {
       console.log("Updating...")
       this.$root.updateUsers();
     },
-    signIn: function() {
+    signIn: async function() {
       let i={};
       for (i of this.users){
         if (i.id==this.tempUser){
@@ -68,7 +68,14 @@ export default {
           break;
         }
       }
-      console.log(this.tempUser)
+      this.$root.currentDriver={};
+
+      let driver = {};
+          for (driver of this.$root.drivers){
+            if (driver.firstName==this.currentUser.firstName && driver.lastName==this.currentUser.lastName){
+              this.$root.currentDriver=driver;
+            }
+          }
     },
     signOut: function() {
       this.$root.currentUser = null;
