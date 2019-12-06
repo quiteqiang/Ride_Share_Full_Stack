@@ -17,7 +17,7 @@
                     v-bind:items="vehicles"
             >
                 <template v-slot:item.action="{ item }">
-                    <v-icon small class="ml-2" @click="registerDriveVehicle(item)">
+                    <v-icon small class="ml-2" @click="driveVehicleClicked(item)">
                         mdi-steering
                     </v-icon>
                     <v-icon small class="ml-2" @click="editVehicle(item)">
@@ -152,6 +152,7 @@
             createVisible1: false,
             dialogType:"",
             licenseNumber:"",
+            authorizingVehicle:"",
 
             showConfirm: false,
             confirmHeader: "",
@@ -384,6 +385,30 @@
                     }
                 })
                 .catch(err => this.showDialog("Failed", err));
+        },
+        driveVehicleClicked: function(vehicle){
+            this.authorizingVehicle=vehicle;
+            this.confirmHeader = "Sign up to drive this vehicle?";
+            this.confirmFunction = this.registerDriveVehicle;
+            this.showConfirm=true;
+        },
+        registerDriveVehicle: function(){
+            this.showConfirm=false;
+            this.confirmHeader="";
+            let vehicle = this.authorizingVehicle;
+
+            this.$axios
+            .post("/vehicles/" + vehicle.id + "/drivers",this.$root.currentUser)
+            .then(result=>{
+                if (result.status === 200) {
+                    if (result.data.ok) {
+                    this.update();
+                    this.showDialog("Success", result.data.msge);
+                    } else {
+                    this.showDialog("Sorry", result.data.msge);
+                    }
+                }
+            })
         },
     
     },

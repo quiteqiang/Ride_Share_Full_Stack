@@ -154,4 +154,5 @@ new Vue({
   router,
   vuetify,
    render: h => h(App)
+
 });

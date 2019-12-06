@@ -348,6 +348,35 @@ async function init() {
             }
           }
         },
+      {
+        method: "POST",
+        path:"/vehicles/{id}/drivers",
+        config:{
+          description: "Authorize a driver for a vehicle"
+        },
+        handler: async (request, h)=>{
+          // const result = await ride.query().joinRelation('drivers').where('id',request.params.id);
+          console.log("Drivers:");
+          console.log(request.params.id + ", " + request.payload.id);
+
+          const singleVehicle = await vehicle.query().findById(request.params.id);
+          const singleDriver = await driver.query().findById(request.payload.id);
+          result = await singleVehicle.$relatedQuery('drivers').relate(singleDriver);
+          
+  
+          if (result) {
+            return {
+              ok: true,
+              msge: `Authorized driver '${request.params.id}'`
+            };
+          }
+          else {
+            return {
+              ok : false,
+              msge:  `Couldn't authorize driver '${request.params.id}'`}
+            }
+          }
+        },
     {
       method: "PUT",
       path:"/vehicle/{id}",
