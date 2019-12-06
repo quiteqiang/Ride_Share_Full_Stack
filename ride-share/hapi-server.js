@@ -365,7 +365,11 @@ async function init() {
               msge:  `Couldn't authorize driver '${request.params.id}'`}
             }
           }
-        },
+      },
+      {
+        method:"GET",
+        path:""
+      },
     {
       method: "PUT",
       path:"/vehicle/{id}",
