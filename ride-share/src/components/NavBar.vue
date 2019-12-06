@@ -2,7 +2,7 @@
   <v-app-bar app dark color="primary">
     <router-link v-bind:to="{ name: 'home-page' }">
       <v-toolbar-title class="white--text">
-        QT Ride Share
+        TQ Ride Share
       </v-toolbar-title>
     </router-link>
 
