@@ -1,9 +1,7 @@
 <template>
     <v-container>
         <div>
-            <p class="body-1">Sign in to view your rides as a Passanger</p>
-            <!--//      <v-toolbar-title v-if="isDriver">Hello Driver: {{ currentUser.name }}</v-toolbar-title>-->
-            <v-toolbar-title>Hello: {{ currentUser.name }}</v-toolbar-title>
+            <p class="body-1">Up Coming Rides</p>
             <v-data-table
                     class="elevation-1"
                     v-bind:headers="headers"

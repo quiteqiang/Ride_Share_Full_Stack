@@ -2,7 +2,7 @@
   <v-container>
     <div>
       <h4 class="display-1">Welcome to TQ ride share!</h4>
-      <p class="body-1">Sign in to view your rides</p>
+      <p class="body-1">Sign in to view your rides as Driver</p>
 <!--//      <v-toolbar-title v-if="isDriver">Hello Driver: {{ currentUser.name }}</v-toolbar-title>-->
       <v-toolbar-title>Hello: {{ currentUser.name }}</v-toolbar-title>
       <v-data-table
@@ -11,13 +11,27 @@
         v-bind:items="rides"
       >
       </v-data-table>
+      <Vehicle_type></Vehicle_type>
+      <Home_Rides></Home_Rides>
+      <Home_Passager></Home_Passager>
+      <Home_Driver></Home_Driver>
     </div>
   </v-container>
 </template>
 <script>
+  import Vehicle_type from "../components/Vehicle_type";
+  import Home_Rides from "../components/Home_Rides";
+  import Home_Passager from "../components/Home_Passager";
+  import Home_Driver from "../components/Home_Driver";
 export default {
   created(){
     this.update();
+  },
+  components:{
+    "Vehicle_type":Vehicle_type,
+    "Home_Rides":Home_Rides,
+    "Home_Passager":Home_Passager,
+    "Home_Driver":Home_Driver,
   },
   data: function() {
       return {
@@ -31,7 +45,7 @@ export default {
         ],
       }
   },
-  method:{
+  methods:{
     update: function(){
       this.$root.updateRides();
     },
