@@ -377,9 +377,33 @@ async function init() {
             }
           }
       },
+
       {
         method:"GET",
-        path:""
+        path:"/drivers/{id}/rides",
+        config:{
+            description: "Get all rides for a specified driver"
+        },
+        handler: async (request,h)=>{
+          const data = await ride.query();
+          const rides = ride.relationMappings.drivers;
+          console.log(rides);
+          return {}
+        }
+
+      },
+      {
+        method:"GET",
+        path:"/drivers/{id}/ridess",
+        config:{
+            description: "Get all rides for a specified driver"
+        },
+        handler: async (request,h)=>{
+          const data = await ride.query().joinRelation("drivers");
+          console.log(data);
+          return data;
+        }
+
       },
     {
       method: "PUT",

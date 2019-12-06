@@ -31,7 +31,7 @@ export default {
         ],
       }
   },
-  method:{
+  methods:{
     update: function(){
       this.$root.updateRides();
     },
