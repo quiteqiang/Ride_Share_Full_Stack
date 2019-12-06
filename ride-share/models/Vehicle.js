@@ -12,8 +12,8 @@ class Vehicle extends Model {
                 join: {
                     from: 'vehicle.id',
                     through: {
-                        from: 'authorization.vehicle_id',
-                        to: 'authorization.driver_id'
+                        from: 'authorization.vehicleId',
+                        to: 'authorization.driverId'
                     },
                     to: 'driver.id'
                 }

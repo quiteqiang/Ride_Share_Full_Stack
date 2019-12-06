@@ -6,7 +6,7 @@ class Driver extends Model {
     }
     static get relationMappings(){
         return {
-            vehicles: {
+            authorization: {
                 relation: Model.ManyToManyRelation,
                 modelClass: require('./Vehicle'),
                 join: {
