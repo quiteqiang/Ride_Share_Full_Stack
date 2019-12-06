@@ -6,11 +6,11 @@ const Path = require("path");
 const knex = require('knex')({
   client: 'pg',
   connection: {
-  host: 'faraday.cse.taylor.edu',
-  user: 'tim_swanson',
-  password: 'wijenara',
-  database: 'tim_swanson'
-   }
+    host: 'faraday.cse.taylor.edu',
+    user: 'tim_swanson',
+    password: 'wijenara',
+    database: 'tim_swanson'
+  }
 });
 
 // Objection
@@ -20,7 +20,7 @@ objection.Model.knex(knex);
 
 // Models
 const driver = require("./models/Driver");
-const driverss = require("./models/Drivers");
+const drivers = require("./models/Drivers");
 const vehicle = require("./models/Vehicle");
 const ride = require("./models/Ride");
 const state = require("./models/State");
@@ -90,7 +90,7 @@ async function init() {
         }
       }
     },
-    { 
+    {
       method: "GET",
       path: "/rides",
       config: {
@@ -193,7 +193,7 @@ async function init() {
         }
       }
     },
-    { 
+    {
       method: "GET",
       path: "/passengers",
       config: {
@@ -212,7 +212,7 @@ async function init() {
       },
       handler: async (request,h) => {
         const newdataRide = await passenger.query().insert(request.payload);
-        
+
         if (newdataRide){
           return {
             ok:true,
@@ -235,7 +235,7 @@ async function init() {
       },
       handler: async (request,h) => {
         const newdata = await driver.query().insert(request.payload);
-        
+
         if (newdata){
           return {
             ok:true,
@@ -250,7 +250,7 @@ async function init() {
         }
       }
     },
-    { 
+    {
       method: "GET",
       path: "/driversid",
       config: {
@@ -259,10 +259,10 @@ async function init() {
       handler: async (request, h) => {
         let driversid =  await driverss.query();
         return driversid;
-        
+
       }
     },
-    { 
+    {
       method: "GET",
       path: "/vehicles",
       config: {
@@ -273,7 +273,7 @@ async function init() {
         return data;
       }
     },
-    
+
     {
       method: "GET",
       path: "/locations",
@@ -296,6 +296,30 @@ async function init() {
         const singleRide = await ride.query().findById(request.params.id);
         const singleDriver = await driver.query().findById(request.payload.id);
         result = await singleRide.$relatedQuery('drivers').relate(singleDriver);
+        if (result) {
+          return {
+            ok: true,
+            msge: `Updated ride '${request.params.id}'`
+          };
+        }
+        else {
+          return {
+            ok : false,
+            msge:  `Couldn't update ride '${request.params.id}'`}
+        }
+      }
+    },
+    {
+      method: "POST",
+      path:"/rides/{id}/passengers",
+      config:{
+        description: "Add a passenger to a ride"
+      },
+      handler: async (request, h)=>{
+        // const result = await ride.query().joinRelation('drivers').where('id',request.params.id);
+        const singleRide = await ride.query().findById(request.params.id);
+        const singlePassenger = await passenger.query().findById(request.payload.id);
+        result = await singleRide.$relatedQuery('passengers').relate(singlePassenger);
 
 
         if (result) {
@@ -308,100 +332,75 @@ async function init() {
           return {
             ok : false,
             msge:  `Couldn't update ride '${request.params.id}'`}
-          }
         }
+      }
+    },
+    {
+      method: "POST",
+      path:"/vehicles/{id}/drivers",
+      config:{
+        description: "Authorize a driver for a vehicle"
       },
-      {
-        method: "POST",
-        path:"/rides/{id}/passengers",
-        config:{
-          description: "Add a passenger to a ride"
-        },
-        handler: async (request, h)=>{
-          // const result = await ride.query().joinRelation('drivers').where('id',request.params.id);
-          const singleRide = await ride.query().findById(request.params.id);
-          const singlePassenger = await passenger.query().findById(request.payload.id);
-          result = await singleRide.$relatedQuery('passengers').relate(singlePassenger);
-  
-  
-          if (result) {
-            return {
-              ok: true,
-              msge: `Updated ride '${request.params.id}'`
-            };
-          }
-          else {
-            return {
-              ok : false,
-              msge:  `Couldn't update ride '${request.params.id}'`}
-            }
-          }
-        },
-      {
-        method: "POST",
-        path:"/vehicles/{id}/drivers",
-        config:{
-          description: "Authorize a driver for a vehicle"
-        },
-        handler: async (request, h)=>{
-          // const result = await ride.query().joinRelation('drivers').where('id',request.params.id);
-          console.log("Drivers:");
-          console.log(request.params.id + ", " + request.payload.id);
+      handler: async (request, h)=>{
+        // const result = await ride.query().joinRelation('drivers').where('id',request.params.id);
+        console.log("Drivers:");
+        console.log(request.params.id + ", " + request.payload.id);
 
-          const singleVehicle = await vehicle.query().findById(request.params.id);
-          const singleDriver = await driver.query().findById(request.payload.id);
-          result = await singleVehicle.$relatedQuery('drivers').relate(singleDriver);
-          
-  
-          if (result) {
-            return {
-              ok: true,
-              msge: `Authorized driver '${request.params.id}'`
-            };
-          }
-          else {
-            return {
-              ok : false,
-              msge:  `Couldn't authorize driver '${request.params.id}'`}
-            }
-          }
-      },
+        const singleVehicle = await vehicle.query().findById(request.params.id);
+        const singleDriver = await driver.query().findById(request.payload.id);
+        result = await singleVehicle.$relatedQuery('drivers').relate(singleDriver);
 
-      {
-        method:"GET",
-        path:"/drivers/{id}/rides",
-        config:{
-            description: "Get all rides for a specified driver"
-        },
-        handler: async (request,h)=>{
-          const data = await ride.query();
-          const rides = ride.relationMappings.drivers;
-          console.log(rides);
-          return {}
+
+        if (result) {
+          return {
+            ok: true,
+            msge: `Authorized driver '${request.params.id}'`
+          };
         }
-
-      },
-      {
-        method:"GET",
-        path:"/drivers/{id}/ridess",
-        config:{
-            description: "Get all rides for a specified driver"
-        },
-        handler: async (request,h)=>{
-          const data = await ride.query().joinRelation("drivers");
-          console.log(data);
-          return data;
+        else {
+          return {
+            ok : false,
+            msge:  `Couldn't authorize driver '${request.params.id}'`}
         }
+      }
+    },
 
-      },
     {
       method:"GET",
-      path:"/drivers",
+      path:"/drivers/{id}/rides",
       config:{
         description: "Get all rides for a specified driver"
       },
       handler: async (request,h)=>{
-        const data = await ride.query().joinRelation("drivers");
+        const data = await ride.query();
+        const rides = ride.relationMappings.drivers;
+        console.log(rides);
+        return rides;
+      }
+    },
+    // {
+    //   method:"GET",
+    //   path:"/drivers/{id}/ridess",
+    //   config:{
+    //     description: "Get all rides for a specified driver"
+    //   },
+    //   handler: async (request,h)=>{
+    //     const data = await ride.query().joinRelation("drivers");
+    //     console.log(data);
+    //     return data;
+    //   }
+    //
+    // },
+    {
+      method:"GET",
+      path:"/drivers",
+      config:{
+        description: "Get all drivers"
+      },
+      handler: async (request,h)=>{
+        console.log("33333333333");
+        const data = await driver.query();
+        console.log("222222222222");
         console.log(data);
         return data;
       }
@@ -502,16 +501,16 @@ async function init() {
     //   }
     // },
     {
-    method: "GET",
+      method: "GET",
       path: "/vehicle_type",
       config: {
-    description: "Retrieve all Vehicle Type"
-  },
-  handler: async (request, h) => {
-    const data= await vehicle_type.query();
-    return data;
-  }
-},
+        description: "Retrieve all Vehicle Type"
+      },
+      handler: async (request, h) => {
+        const data= await vehicle_type.query();
+        return data;
+      }
+    },
     // {
     //   method: "GET",
     //   path: "/vehicle_type",

@@ -12,28 +12,30 @@
     </v-container>
 </template>
 <script>
-    export default {
+    export default{
         created(){
             this.update();
         },
-        data: function() {
+        data:function(){
             return {
                 headers: [
                     { text: "First Name", value: "firstname" },
                     { text: "Last Name", value: "lastname" },
                     { text: "Phone", value: "phone" },
-                    { text: "Licensebumber", value: "licensenumber" },
+                    { text: "License Number", value: "licensenumber" },
                 ],
             }
         },
         methods:{
             update: function(){
                 this.$root.updateDrivers();
-            },
+                console.log("000000000000000");
+            }
         },
-        computed: {
-            drivers:function(){
+        computed:{
+            drivers: function(){
                 if (this.$root.drivers) {
+                    console.log(this.$root.drivers);
                     return this.$root.drivers;
                 } else {
                     return false;

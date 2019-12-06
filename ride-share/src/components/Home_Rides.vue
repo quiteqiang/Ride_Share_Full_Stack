@@ -68,18 +68,6 @@
                 }
                 return false;
             },
-            isDriver:function(){
-                if (this.$root.currentUser in this.$root.driver){
-                    return true;
-                }
-                return false;
-            },
-            // isPassager:function(){
-            //   if (this.$root.currentUser in this.$root.user){
-            //     return true;
-            //   }
-            //   return false;
-            // }
         }
     }
 </script>

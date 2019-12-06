@@ -3,7 +3,6 @@
     <div>
       <h4 class="display-1">Welcome to TQ ride share!</h4>
       <p class="body-1">Sign in to view your rides as Driver</p>
-<!--//      <v-toolbar-title v-if="isDriver">Hello Driver: {{ currentUser.name }}</v-toolbar-title>-->
       <v-toolbar-title>Hello: {{ currentUser.name }}</v-toolbar-title>
       <v-data-table
         class="elevation-1"
@@ -51,8 +50,11 @@ export default {
     },
   },
   computed: {
+    // filteredRidesForDriver: function(){
+    // },
     rides: function() {
       if (this.$root.rides) {
+        console.log(this.$root.rides);
         return this.$root.rides;
       } else {
         return false;
@@ -91,12 +93,6 @@ export default {
       }
       return false;
     },
-    // isPassager:function(){
-    //   if (this.$root.currentUser in this.$root.user){
-    //     return true;
-    //   }
-    //   return false;
-    // }
   }
 }
 </script>

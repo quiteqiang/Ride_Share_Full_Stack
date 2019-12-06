@@ -34,13 +34,28 @@ new Vue({
               let i = 0;
               for (i in result.data){
                 this.rides.push(result.data[i].firstName + " " + result.data[i].lastName);
-                // console.log("Result--------");
-                // console.log(result);
               }
               this.rides =  result.data;
+              console.log(this.rides);
           }
         });
         //update this.rides
+      },
+      updateDrivers: function(){
+          this.$axios
+              .get("/drivers", {})
+              .then(result => {
+                  if (result.status === 200) {
+                      this.drivers=[];
+                      let i = 0;
+                      console.log("111111111111");
+                      for (i in result.data){
+                          this.drivers.push(result.data[i].firstName + " " + result.data[i].lastName);
+                      }
+                      this.drivers =  result.data;
+
+                  }
+              });
       },
       updateVehicles: function(){
         // console.log("Updating vehicles...")
@@ -78,9 +93,6 @@ new Vue({
               for (i in result.data){
                 this.locations.push(result.data[i]);
               }
-              
-              
-
               return this.locations;
           }
           else {
@@ -104,11 +116,6 @@ new Vue({
 
               }
               return this.passengers;
-
-            // } else {
-              // 
-              // return (result.data.msge)
-          // }
           }
           else {
             
@@ -135,23 +142,10 @@ new Vue({
               });
           //update this.rides
       },
-      updateDrivers: function(){
-        this.$axios
-        .get("/drivers", {})
-        .then(result => {
-          if (result.status === 200) {
-              this.drivers=[];
-              let i = 0;
-              for (i in result.data){
-                this.drivers.push(result.data[i].firstName + " " + result.data[i].lastName);
-              }
-              this.drivers =  result.data;
-            
-          }
-        });
-      }
+
       },
   router,
   vuetify,
    render: h => h(App)
+
 });
