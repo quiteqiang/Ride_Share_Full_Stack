@@ -43,7 +43,7 @@ class Ride extends Model {
                 relation: Model.BelongsToOneRelation,
                 modelClass: require('./Location'),
                 join: {
-                    from: 'ride.fromLocationId',
+                    from: 'ride.fromlocationid',
                     to: 'location.id'
                 }
             },
@@ -51,7 +51,7 @@ class Ride extends Model {
                 relation: Model.BelongsToOneRelation,
                 modelClass: require('./Location'),
                 join: {
-                    from: 'ride.toLocationId',
+                    from: 'ride.tolocationid',
                     to: 'location.id'
                 }
             }

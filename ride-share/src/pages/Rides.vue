@@ -149,8 +149,8 @@ export default {
   data: function() {
     return {
       headers: [
-        { text: "From", value: "fromlocationid" },
-        { text: "To", value: "tolocationid" },
+        { text: "From", value: "from_location.city" },
+        { text: "To", value: "to_location.city" },
         { text: "Distance", value: "distance" },
         { text: "Departure Date", value: "date" },
         { text: "Departure Time", value: "time" },

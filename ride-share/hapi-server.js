@@ -97,7 +97,7 @@ async function init() {
         description: "Retrieve all rides"
       },
       handler: async (request, h) => {
-        const data= await ride.query();
+        const data= await ride.query().eager("[from_location, to_location]");
         return data;
       }
     },
